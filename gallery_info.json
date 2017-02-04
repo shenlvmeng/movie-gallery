@@ -1,0 +1,117 @@
+{
+	"name": "MyPhotoGallery",
+	"author": "shenlvmeng",
+	"description": "My photo gallery",
+	"content": [
+		{
+			"date": 20120108,
+			"info": "12 angry men(不愧IMDB 8.9 豆瓣 9.3的评分）",
+			"tags": [
+				"十二怒汉", "剧情", "美国", "欧美", "Henry Fonda", "~70s", "人性", "法律", "黑白", "经典", "9+", "Sydney Lumet"
+			],
+			"type": "jpg"
+		},{
+			"date": 20120105,
+			"info": "熟悉的两位 gary oldman演得确实好~",
+			"tags": [
+				"欧美", "法国", "这个杀手不太冷", "Jean Reno", "Natalie Portman", "Gary Oldman", "经典", "剧情", "动作", "犯罪",
+				"90s", "9+", "Luc Besson"],
+			"type": "jpg"
+		},{
+			"date": 20120312,
+			"info": "牛B的连恩尼森 片子紧凑精简 没什么废话 动作片就应该这么不拖泥带水 就像一个精致的《007》 其实名字可以改成《保持通话》的————《Taken》（《飓风营救》）",
+			"tags": ["飓风营救", "Taken", "剧情", "动作", "惊悚", "犯罪", "欧美", "法国", "美国", "英国", "Liam Neeson", "00s", "特工", "8+", "Pierre Morel", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120313,
+			"info": "典型的美国个人英雄主义 典型的一水美国片坏蛋 政治因素的参与却让它有点变味儿 看看片中的各种枪 体会下其中暧昧的价值观就好了",
+			"tags": ["生死狙击", "动作", "悬疑", "犯罪", "欧美", "美国", "Mark Wahlberg", "Kate Mara", "Michael Peña", "00s", "特工", "战争", "7+", "Antoine Fuqua", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120315,
+			"info": "许鞍华式的笑中带泪 它像一杯清酒 清淡 有后劲儿 适合习惯油腻的浮躁之人品味",
+			"tags": ["桃姐", "剧情", "港台", "香港", "温情", "家庭", "叶德娴", "刘德华", "秦海璐", "秦沛", "黄秋生", "罗兰", "徐克", "洪金宝", "宁浩", "杜汶泽", "~10s", "8+", "许鞍华", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120318,
+			"info": "血 爱 毒品 肾上腺素 动作 暴力 刺激的混合体",
+			"tags": ["怒火攻心", "Crank", "欧美", "美国", "剧情", "动作", "犯罪", "暴力", "黑帮", "cult", "Jason Statham", "00s", "7+", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120318,
+			"info": "低俗小说上映后 乌玛·瑟曼过气的事业又迎来了第二春。",
+			"tags": ["低俗小说", "Pulp Fiction", "剧情", "喜剧", "犯罪", "黑色", "黑帮", "经典", "欧美", "美国", "John Travolta", "Uma Thurman", "Tim Roth", "Samuel L. Jackson", "90s", "8+", "Quentin Tarantino", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120318,
+			"info": "94年的电影：肖申克的救赎 阿甘正传 低俗小说 这个杀手不太冷 东邪西毒 活着 那确实是一个黄金年代 电影里昆汀用回环的奇妙剪辑把本来毫不出彩的故事拍的有了味儿 ps：在电影中fuck出现了271次...",
+			"tags": ["低俗小说", "Pulp Fiction", "美国", "John Travolta", "Uma Thurman", "Tim Roth", "Samuel L. Jackson", "90s", "Quentin Tarantino", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120323,
+			"info": "给力 的字幕组~不过笑点得看了黑镜ep1才能明白~",
+			"tags": ["黑镜", "ep1", "screenshot", "CCTV"],
+			"type": "jpg"
+		},{
+			"date": 20120323,
+			"info": "有些故事愈荒诞 愈能说明道理 youtube和twitter成为了网络时代的“民意” 网络上的热闹和公主解救时的空荡的街道构成了鲜明的对比 什么是人性？",
+			"tags": ["黑镜", "ep1", "黑色", "~10s", "英剧"],
+			"type": "jpg"
+		},{
+			"date": 20120323,
+			"info": "这就是科技带给我们的进步？除了nopple（no apple）的影射 选秀的嫁接也天衣无缝 所有人都生活在消费主义的世界里 影片的最后 反叛精神又一次被消费主义吞噬了",
+			"tags": ["黑镜", "ep2", "screenshot", "黑色", "英剧", "~10s"],
+			"type": "jpg"
+		},{
+			"date": 20120323,
+			"info": "你用什么来证明你到过一个名胜古迹呢？拍下来的一堆照片？",
+			"tags": ["黑镜", "ep3", "screenshot", "黑色", "英剧", "~10s"],
+			"type": "jpg"
+		},{
+			"date": 20120323,
+			"info": "They are all tragedies.",
+			"tags": ["黑镜", "黑色", "人性", "欧美", "英国", "~10s", "9+", "英剧"],
+			"type": "jpg"
+		},{
+			"date": 20120107,
+			"info": "“做人如果没有梦想，那和一条咸鱼有什么分别”",
+			"tags": ["少林足球", "喜剧", "动作", "运动", "星爷", "港台", "香港", "周星驰", "吴孟达", "赵薇", "谢贤", "莫文蔚", "黄一飞", "田启文", "林子聪", "00s", "7+"],
+			"type": "jpg"
+		},{
+			"date": 20120107,
+			"info": "“做人如果没有梦想，那和一条咸鱼有什么分别”",
+			"tags": ["少林足球", "周星驰", "田启文", "吴孟达", "screenshot", "00s"],
+			"type": "jpg"
+		},{
+			"date": 20120108,
+			"info": "12怒汉",
+			"tags": ["12怒汉", "黑白", "~70s", "Henry Fonda", "Sydney Lumet"],
+			"type": "jpg"
+		},{
+			"date": 20120108,
+			"info": "12怒汉",
+			"tags": ["12怒汉", "黑白", "~70s", "Henry Fonda", "Sydney Lumet"],
+			"type": "jpg"
+		},{
+			"date": 20120107,
+			"info": "或然率的剧情演绎。",
+			"tags": ["少林足球", "或然率", "周星驰"],
+			"type": "jpg"
+		},{
+			"date": 20120406,
+			"info": "想了好久才发现“崔尼蒂” 就是记忆碎片里的女主~",
+			"tags": ["Keanu Reeves", "Carrie-Anne Moss"],
+			"type": "jpg"
+		},{
+			"date": 20120407,
+			"info": "百看不厌",
+			"tags": ["黑客帝国", "第2部", "动作", "科幻", "经典", "剧情", "Keanu Reeves", "Carrie-Anne Moss", "Hugo Weaving", "Laurence Fishburne", "欧美", "8+", "Lilly Wachowski", "Lana Wachowski", "preface"],
+			"type": "jpg"
+		},{
+			"date": 20120407,
+			"info": "百看不厌",
+			"tags": ["黑客帝国", "第3部", "动作", "科幻", "经典", "剧情", "Keanu Reeves", "Carrie-Anne Moss", "Hugo Weaving", "Monica Bellucci", "邹兆龙", "欧美", "8+", "Lilly Wachowski", "Lana Wachowski", "preface"],
+			"type": "jpg"
+		}
+	]
+}
