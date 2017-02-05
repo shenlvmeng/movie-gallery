@@ -82,17 +82,33 @@ loadFile("./gallery_info.json", function(){
 		},
 
 		Info = {
-			template: '<div id="display">\
+			template: '<div id="display" :style="{top: scrolltop}">\
+				<aside @click="quit" @touchend="quit">×</aside>\
 				<figure><img :src="path"></figure>\
 					<div id="imginfo">\
 						<p><span class="vertical-center">{{info}}</span></p>\
-						<div id="imgtags"><span v-for="tag in tags" @touchend="changeView($event)" @click="chooseTag($event)">{{tag}}</span></div>\
+						<div id="imgtags"><span v-for="tag in tags" @touchend="chooseTag($event)" @click="chooseTag($event)">{{tag}}</span></div>\
 					</div>\
 				</div>',
+			data: function () {
+				return {
+					scrolltop: "50px"
+				}
+			},
 			props: ['pid'],
+			created: function () {
+				//get scrollY
+				var supportPageOffset = window.pageXOffset !== undefined,
+					isCSS1Compat = ((document.compatMode || "") === "CSS1Compat"),
+					y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+				this.scrolltop = Math.max(50, y) + "px";
+			},
 			methods: {
 				chooseTag: function (event) {
 					this.$emit('revisetag', event.target.innerHTML);
+				},
+				quit: function () {
+					this.$emit('revisetag');
 				}
 			},
 			computed: {
@@ -197,7 +213,11 @@ loadFile("./gallery_info.json", function(){
 					this.currView = 'picinfo';
 				},
 				reviseTag: function (tag) {
-					this.filter = tag;
+					if (tag) {
+						this.filter = tag;
+					} else {
+						this.currView = "picwall";
+					}
 				}
 			},
 			computed: {

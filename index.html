@@ -75,7 +75,9 @@
 		<div>
 			<picwall :factors="factors" @toinfo="toInfo">
 		</div>
-		<picinfo v-if="currView == 'picinfo'" :pid="pid" class="clearfix" @revisetag="reviseTag">
+		<transition name="picinfo">
+			<picinfo v-if="currView == 'picinfo'" :pid="pid" class="clearfix" @revisetag="reviseTag">
+		</transition>
 	</section>
 	</div>
 	<footer>
