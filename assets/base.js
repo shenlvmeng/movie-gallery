@@ -48,124 +48,166 @@ loadFile("./gallery_info.json", function(){
 
 
 	var Wall = {
-		template: '<div id="photos">\
-			<figure v-for="item in items"><img :src="item"></figure>\
-		</div>',
-		props: ['factors'],
-		computed: {
-			items: function () {
-				var tmparr = [],
-	            	tmp = {},
-	            	myarr = Array.apply(null, Array(res.content.length)).map(function (x, i) { return i; });
-            	this.factors.forEach(function(val) {
-            		myarr = _.intersection(tag_list[val], myarr);
-            		if ([] == myarr) {
-            			return;
-            		}
-            		//console.log(myarr);
-            	});
+			template: '<div id="photos">\
+				<figure v-for="item in items" :id="item.id" @click="changeView($event)"><img :src="item.path"></figure>\
+			</div>',
+			props: ['factors'],
+			methods: {
+				changeView: function (event) {
+					this.$emit('toinfo', event.target.parentElement.id);
+				}
+			},
+			computed: {
+				items: function () {
+					var tmparr = [],
+		            	tmp = {},
+		            	myarr = Array.apply(null, Array(res.content.length)).map(function (x, i) { return i; });
+	            	this.factors.forEach(function(val) {
+	            		myarr = _.intersection(tag_list[val], myarr);
+	            		if ([] == myarr) {
+	            			return;
+	            		}
+	            		//console.log(myarr);
+	            	});
 
-	            for (var i = 0, len = myarr.length; i < len; i++) {
-	                if (tmp[myarr[i]] == undefined) {
-	                    tmp[myarr[i]] = 1
-	                    tmparr.push("./assets/img/" + myarr[i] + "." + res.content[myarr[i]].type);
-	                }
-	            }
-	            return tmparr;
+		            for (var i = 0, len = myarr.length; i < len; i++) {
+		                if (tmp[myarr[i]] == undefined) {
+		                    tmp[myarr[i]] = 1;
+		                    tmparr.push({id: myarr[i], path: "./assets/img/" + myarr[i] + "." + res.content[myarr[i]].type});
+		                }
+		            }
+		            return tmparr;
+				}
 			}
-		}
-	}
-
-	var vm = new Vue({
-		data: {
-			filter: ""
 		},
-		mounted: function () {
-			document.querySelectorAll(".list-item").forEach(function (val) {
-				val.addEventListener("click", function (e){
+
+		Info = {
+			template: '<div id="display">\
+				<figure><img :src="path"></figure>\
+					<div id="imginfo">\
+						<p><span class="vertical-center">{{info}}</span></p>\
+						<div id="imgtags"><span v-for="tag in tags">{{tag}}</span></div>\
+					</div>\
+				</div>',
+			props: ['pid'],
+			computed: {
+				path: function () {
+					return "./assets/img/" + this.pid + "." + res.content[this.pid].type;
+				},
+				info: function () {
+					return res.content[this.pid].info;
+				},
+				tags: function () {
+					return res.content[this.pid].tags;
+				}
+			}
+		},
+
+
+		vm = new Vue({
+			data: {
+				filter: "",
+				pid: 0,
+				currView: 'picinfo'
+			},
+			mounted: function () {
+				document.querySelectorAll(".list-item").forEach(function (val) {
+					val.addEventListener("click", function (e){
+						document.querySelectorAll(".list-item").forEach(function (val) {
+							val.children[1].style.display = "";
+						});
+						if (this.children[1].style.display == "") {
+							this.children[1].style.display = "block";
+						} else {
+							this.children[1].style.display = "";
+						}
+
+						if (!e){
+							var e = window.event;
+						}
+						e.cancelBubble = true;
+						if (e.stopPropagation){
+							e.stopPropagation();
+						}
+					});
+					val.addEventListener("touchend", function (e) {
+						document.querySelectorAll(".list-item").forEach(function (val) {
+							val.children[1].style.display = "";
+						});
+						if (this.children[1].style.display == "") {
+							this.children[1].style.display = "block";
+						} else {
+							this.children[1].style.display = "";
+						}
+						if (!e){
+							var e = window.event;
+						}
+						e.cancelBubble = true;
+						if (e.stopPropagation){
+							e.stopPropagation();
+						}
+					});
+				});
+				window.addEventListener("click", function () {
 					document.querySelectorAll(".list-item").forEach(function (val) {
 						val.children[1].style.display = "";
 					});
-					if (this.children[1].style.display == "") {
-						this.children[1].style.display = "block";
-					} else {
-						this.children[1].style.display = "";
-					}
-
-					if (!e){
-						var e = window.event;
-					}
-					e.cancelBubble = true;
-					if (e.stopPropagation){
-						e.stopPropagation();
-					}
 				});
-				val.addEventListener("touchend", function (e) {
+				window.addEventListener("touchend", function () {
 					document.querySelectorAll(".list-item").forEach(function (val) {
 						val.children[1].style.display = "";
 					});
-					if (this.children[1].style.display == "") {
-						this.children[1].style.display = "block";
-					} else {
-						this.children[1].style.display = "";
-					}
-					if (!e){
-						var e = window.event;
-					}
-					e.cancelBubble = true;
-					if (e.stopPropagation){
-						e.stopPropagation();
-					}
 				});
-			});
-			window.addEventListener("click", function () {
-				document.querySelectorAll(".list-item").forEach(function (val) {
-					val.children[1].style.display = "";
-				});
-			});
-			window.addEventListener("touchend", function () {
-				document.querySelectorAll(".list-item").forEach(function (val) {
-					val.children[1].style.display = "";
-				});
-			});
-		},
-		methods: {
-			addPreface: function () {
-				if (this.filter == "") {
-					this.filter = "preface";
-				}
-				if (this.factors.indexOf("preface") == -1) {
-					this.filter += ",preface";
+			},
+			methods: {
+				addPreface: function () {
+					if (this.filter == "") {
+						this.filter = "preface";
+					}
+					if (this.factors.indexOf("preface") == -1) {
+						this.filter += ",preface";
+					}
+				},
+				addShot: function () {
+					if (this.filter == "") {
+						this.filter = "screenshot";
+					}
+					if (this.factors.indexOf("screenshot") == -1) {
+						this.filter += ",screenshot";
+					}
+				},
+				addTag: function (event) {
+					var tag = event.target.innerHTML;
+					if (this.filter == "") {
+						this.filter = tag;
+					}
+					if (this.factors.indexOf(tag) == -1) {
+						this.filter += ("," + tag);
+					}
+				},
+				toInfo: function (id) {
+					if (id) {
+						this.pid = id;
+					}
+					this.currView = 'picinfo';
 				}
 			},
-			addShot: function () {
-				if (this.filter == "") {
-					this.filter = "screenshot";
-				}
-				if (this.factors.indexOf("screenshot") == -1) {
-					this.filter += ",screenshot";
+			computed: {
+				factors: function () {
+					return this.filter.split(",", 10).filter(function(element){
+						return element != "";
+					});
 				}
 			},
-			addTag: function (event) {
-				var tag = event.target.innerHTML;
-				if (this.filter == "") {
-					this.filter = tag;
+			watch: {
+				filter: function () {
+					this.currView = 'picwall';
 				}
-				if (this.factors.indexOf(tag) == -1) {
-					this.filter += ("," + tag);
-				}
+			},
+			components: {
+				picwall: Wall,
+				picinfo: Info
 			}
-		},
-		computed: {
-			factors: function () {
-				return this.filter.split(",", 10).filter(function(element){
-					return element != "";
-				});
-			}
-		},
-		components: {
-			picwall: Wall
-		}
-	}).$mount("#app");
+		}).$mount("#app");
 
 });
