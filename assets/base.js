@@ -49,7 +49,10 @@ loadFile("./gallery_info.json", function(){
 
 	var Wall = {
 			template: '<div id="photos">\
-				<figure v-for="item in items" :id="item.id" @touchend="changeView($event)" @click="changeView($event)"><img :src="item.path"></figure>\
+				<figure v-for="item in items" :id="item.id" @touchend="changeView($event)" @click="changeView($event)">\
+					<img :src="item.path">\
+					<aside><span>{{item.desc}}</span></aside>\
+				</figure>\
 			</div>',
 			props: ['factors'],
 			methods: {
@@ -73,7 +76,7 @@ loadFile("./gallery_info.json", function(){
 		            for (var i = 0, len = myarr.length; i < len; i++) {
 		                if (tmp[myarr[i]] == undefined) {
 		                    tmp[myarr[i]] = 1;
-		                    tmparr.push({id: myarr[i], path: "./assets/img/" + myarr[i] + "." + res.content[myarr[i]].type});
+		                    tmparr.push({id: myarr[i], desc: res.content[myarr[i]].info, path: "./assets/img/" + myarr[i] + "." + res.content[myarr[i]].type});
 		                }
 		            }
 		            return tmparr;
@@ -87,7 +90,12 @@ loadFile("./gallery_info.json", function(){
 				<figure><img :src="path"></figure>\
 					<div id="imginfo">\
 						<p><span class="vertical-center">{{info}}</span></p>\
-						<div id="imgtags"><span v-for="tag in tags" @touchend="chooseTag($event)" @click="chooseTag($event)">{{tag}}</span></div>\
+						<div id="imgtags"><span v-for="tag in tags" @touchend="chooseTag($event)" @click="chooseTag($event)">{{tag}}</span>\
+						</div>\
+						<div id="imgrelated" class="clearfix">\
+							<div>相似的图片：</div>\
+							<img v-for="relate in relates" :src="relate">\
+						</div>\
 					</div>\
 				</div>',
 			data: function () {
@@ -120,6 +128,34 @@ loadFile("./gallery_info.json", function(){
 				},
 				tags: function () {
 					return res.content[this.pid].tags;
+				},
+				relates: function () {
+					var t = this.tags,
+						result = [parseInt(this.pid)];
+					for (var i = 0; i < 4; i++) {
+						//tag list from a random tag
+						var n     = tag_list[t[_.random(t.length-1)]],
+							ran   = _.random(n.length-1),
+							count = 0;
+						//choose a random appropriate id
+						while (result.indexOf(n[ran]) != -1) {
+							n   = tag_list[t[_.random(t.length-1)]];
+							ran = _.random(n.length-1);
+							count++;
+							//in case of infinite loop
+							if (count > 20) {
+								result.shift();
+								return result.map(function (val) {
+									return "./assets/img/" + val + "." + res.content[val].type;
+								});
+							}
+						}
+						result.push(n[ran]);
+					}
+					result.shift();
+					return result.map(function (val) {
+						return "./assets/img/" + val + "." + res.content[val].type;
+					});
 				}
 			}
 		},

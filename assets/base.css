@@ -118,6 +118,7 @@ nav button {
 	height: auto !important;
 	margin-bottom: 3px;
 	cursor: pointer;
+	position: relative;
 }
 #photos figure:hover {
 	box-shadow: 		0 0 20px 5px green;
@@ -126,6 +127,26 @@ nav button {
 }
 #photos figure img {
 	width: 100%;
+}
+#photos figure aside {
+	position: absolute;
+	bottom: 0;
+	display: none;
+	width: 100%;
+	font-size: 12px;
+	line-height: 2.5em;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #fff;
+	background-color: #000;
+	opacity: .8;
+	text-overflow: ellipsis;
+}
+#photos figure:hover aside {
+	display: block;
+}
+#photos figure aside span {
+	padding: 0 5px;
 }
 @media (max-width: 1240px) {
 	#imginfo{
@@ -232,6 +253,7 @@ footer {
 #imgtags {
 	padding: 20px;
 	border-top: 2px solid #222;
+	border-bottom: 2px solid #222;
 }
 #imgtags span {
 	display: inline-block;
@@ -246,6 +268,14 @@ footer {
 	font-size: 10px;
 	font-weight: bold;
 	cursor: pointer;
+}
+#imgrelated {
+	padding: 20px;
+}
+#imgrelated img {
+	height: 120px;
+	margin: 10px;
+	float: left;
 }
 footer p:first-child {
 	font-size: 14px;
