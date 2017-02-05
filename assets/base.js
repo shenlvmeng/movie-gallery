@@ -94,13 +94,14 @@ loadFile("./gallery_info.json", function(){
 						</div>\
 						<div id="imgrelated" class="clearfix">\
 							<div>相似的图片：</div>\
-							<img v-for="relate in relates" :src="relate">\
+							<img v-for="relate in relates" :src="relate.path" :id="relate.id" @touchend="choosePic($event)" @click="choosePic($event)">\
 						</div>\
 					</div>\
 				</div>',
 			data: function () {
 				return {
-					scrolltop: "50px"
+					scrolltop: "50px",
+					id: this.pid
 				}
 			},
 			props: ['pid'],
@@ -115,23 +116,29 @@ loadFile("./gallery_info.json", function(){
 				chooseTag: function (event) {
 					this.$emit('revisetag', event.target.innerHTML);
 				},
+				choosePic: function (event) {
+					var res = parseInt(event.target.id);
+					if (res >= 0){
+						this.id = res;
+					}
+				},
 				quit: function () {
 					this.$emit('revisetag');
 				}
 			},
 			computed: {
 				path: function () {
-					return "./assets/img/" + this.pid + "." + res.content[this.pid].type;
+					return "./assets/img/" + this.id + "." + res.content[this.pid].type;
 				},
 				info: function () {
-					return res.content[this.pid].info;
+					return res.content[this.id].info;
 				},
 				tags: function () {
-					return res.content[this.pid].tags;
+					return res.content[this.id].tags;
 				},
 				relates: function () {
 					var t = this.tags,
-						result = [parseInt(this.pid)];
+						result = [parseInt(this.id)];
 					for (var i = 0; i < 4; i++) {
 						//tag list from a random tag
 						var n     = tag_list[t[_.random(t.length-1)]],
@@ -154,7 +161,7 @@ loadFile("./gallery_info.json", function(){
 					}
 					result.shift();
 					return result.map(function (val) {
-						return "./assets/img/" + val + "." + res.content[val].type;
+						return {path: "./assets/img/" + val + "." + res.content[val].type, id: val};
 					});
 				}
 			}
@@ -243,6 +250,7 @@ loadFile("./gallery_info.json", function(){
 					}
 				},
 				toInfo: function (id) {
+					console.log(id);
 					if (id) {
 						this.pid = id;
 					}
