@@ -49,7 +49,7 @@ loadFile("./gallery_info.json", function(){
 
 	var Wall = {
 			template: '<div id="photos">\
-				<figure v-for="item in items" :id="item.id" @click="changeView($event)"><img :src="item.path"></figure>\
+				<figure v-for="item in items" :id="item.id" @touchend="changeView($event)" @click="changeView($event)"><img :src="item.path"></figure>\
 			</div>',
 			props: ['factors'],
 			methods: {
@@ -86,10 +86,15 @@ loadFile("./gallery_info.json", function(){
 				<figure><img :src="path"></figure>\
 					<div id="imginfo">\
 						<p><span class="vertical-center">{{info}}</span></p>\
-						<div id="imgtags"><span v-for="tag in tags">{{tag}}</span></div>\
+						<div id="imgtags"><span v-for="tag in tags" @touchend="changeView($event)" @click="chooseTag($event)">{{tag}}</span></div>\
 					</div>\
 				</div>',
 			props: ['pid'],
+			methods: {
+				chooseTag: function (event) {
+					this.$emit('revisetag', event.target.innerHTML);
+				}
+			},
 			computed: {
 				path: function () {
 					return "./assets/img/" + this.pid + "." + res.content[this.pid].type;
@@ -108,7 +113,7 @@ loadFile("./gallery_info.json", function(){
 			data: {
 				filter: "",
 				pid: 0,
-				currView: 'picinfo'
+				currView: 'picwall'
 			},
 			mounted: function () {
 				document.querySelectorAll(".list-item").forEach(function (val) {
@@ -190,6 +195,9 @@ loadFile("./gallery_info.json", function(){
 						this.pid = id;
 					}
 					this.currView = 'picinfo';
+				},
+				reviseTag: function (tag) {
+					this.filter = tag;
 				}
 			},
 			computed: {

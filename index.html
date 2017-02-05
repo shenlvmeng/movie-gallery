@@ -72,8 +72,10 @@
 		</nav>
 	</section>
 	<section id="body">
-
-		<picinfo v-if="currView == 'picinfo'" :pid="pid" class="clearfix">
+		<div>
+			<picwall :factors="factors" @toinfo="toInfo">
+		</div>
+		<picinfo v-if="currView == 'picinfo'" :pid="pid" class="clearfix" @revisetag="reviseTag">
 	</section>
 	</div>
 	<footer>
