@@ -16,7 +16,7 @@ function loadFile (url, callback) {
 	req.send(null);
 }
 
-loadFile("./gallery_info.json", function(){
+loadFile("./dist/gallery_info.json", function(){
 	res = JSON.parse(this.responseText);
 	//print meta data
 	console.log(res.name + ": " + res.description);

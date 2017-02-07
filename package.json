@@ -1,0 +1,31 @@
+{
+  "name": "myphotogallery",
+  "version": "1.0.0",
+  "description": "A gallery display meaningful pictures or photos.",
+  "dependencies": {},
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shenlvmeng/MyPhotoGallery.git"
+  },
+  "keywords": [
+    "front-end",
+    "vue",
+    "gallery"
+  ],
+  "author": "shenlvmeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shenlvmeng/MyPhotoGallery/issues"
+  },
+  "homepage": "https://github.com/shenlvmeng/MyPhotoGallery#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.0.0",
+    "gulp-jsonminify": "^1.0.0",
+    "gulp-minify": "0.0.15"
+  }
+}

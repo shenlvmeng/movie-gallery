@@ -13,3 +13,13 @@ Every item of items in ```content``` are composed of fields "date", "info", "tag
 * ```info```: description of this picture
 * ```tags```: most important part. Tags are used to identify a picture and judge relationship of other pictures
 * ```type```: the format of this picture
+
+## For devolopers
+
+Use ```npm install --dev``` to download plugins to minify js/css/json files in ```assets```
+
+Just minify codes from 
+
+```shell
+gulp [css | js | json]
+```
