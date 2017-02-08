@@ -128,7 +128,7 @@ loadFile("./dist/gallery_info.json", function(){
 			},
 			computed: {
 				path: function () {
-					return "./assets/img/" + this.id + "." + res.content[this.pid].type;
+					return "./assets/img/" + this.id + "." + res.content[this.id].type;
 				},
 				info: function () {
 					return res.content[this.id].info;
