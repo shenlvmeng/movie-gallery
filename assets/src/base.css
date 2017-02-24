@@ -132,6 +132,9 @@ nav button {
 #photos figure img {
 	width: 100%;
 }
+#photos .blankimg {
+	min-height: 150px;
+}
 #photos figure aside {
 	position: absolute;
 	bottom: 0;

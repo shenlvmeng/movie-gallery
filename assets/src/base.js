@@ -1,4 +1,5 @@
-var res, tag_list = {};
+var res, 
+	tag_list = {};
 
 //asynchronical XMLHttpRequest
 function loadFile (url, callback) {
@@ -48,16 +49,55 @@ loadFile("./dist/gallery_info.json", function(){
 
 
 	var Wall = {
-			template: '<div id="photos">\
-				<figure v-for="item in items" :id="item.id" @click="changeView($event)">\
-					<img :src="item.path">\
+			template: '<div id="photos" @click="changeView($event)">\
+				<figure v-for="item in items" :id="item.id">\
+					<img :src="(!! lazylist && lazylist[item.id]) ?  stupid : item.path" :class="{blankimg: (!! lazylist && lazylist[item.id])}" :ref="stupidPrefix + item.id">\
 					<aside><span>{{item.desc}}</span></aside>\
 				</figure>\
 			</div>',
 			props: ['factors'],
+			data: function () {
+				return {
+					lazylist: Array.apply(null, new Array(res.content.length)).map(function () {return true;}),
+					stupid: "./assets/img/blank.jpg",
+					stupidPrefix: "i_"
+				}
+			},
+			mounted: function () {
+				//first load
+				this.lazyload();
+				window.addEventListener("scroll", this.lazyload);
+				window.addEventListener("resize", this.lazyload);
+			},
 			methods: {
 				changeView: function (event) {
 					this.$emit('toinfo', event.target.parentElement.id);
+				},
+				lazyload: function (arr) {
+					//avoid meaningless loop
+					if ([] === this.lazylist) {
+						return;
+					}
+					var viewportTop = (window.innerHeight || document.documentElement.clientHeight) + (document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset),
+						self = this;
+					//search for lazy images
+					//DOM manipulation
+					this.items.forEach(function (val) {
+						//jump over loaded images
+						if (self.lazylist[val.id] == false) {
+							return;
+						}
+						//load lazy images
+						var imgNode = self.$refs["i_" + val.id][0];
+						//reduce DOM manipulation
+						//just modify status data and let Vue do rendering matters
+						if (imgNode.parentElement.offsetTop < viewportTop) {
+							self.lazylist.splice(val.id, 1, false);
+						}
+					});
+					if (-1 == this.lazylist.indexOf(true)) {
+						this.lazylist = [];
+					}
 				}
 			},
 			computed: {
@@ -81,6 +121,19 @@ loadFile("./dist/gallery_info.json", function(){
 		            }
 		            return tmparr;
 				}
+			},
+			watch: {
+				items: function (newItem) {
+					//listen to factor changes
+					if ([] === this.lazylist) {
+						return;
+					}
+					//simplify lazy load for better experience
+					var self = this;
+					newItem.forEach(function (val) {
+						self.lazylist.splice(val.id, 1, false);
+					});
+				}
 			}
 		},
 
@@ -88,15 +141,16 @@ loadFile("./dist/gallery_info.json", function(){
 			template: '<div id="display" :style="{top: scrolltop}">\
 				<aside @click="quit" @touchend="quit">×</aside>\
 				<figure><img :src="path"></figure>\
-					<div id="imginfo">\
-						<p><span class="vertical-center">{{info}}</span></p>\
-						<div id="imgtags"><span v-for="tag in tags" @touchend="chooseTag($event)" @click="chooseTag($event)">{{tag}}</span>\
-						</div>\
-						<div id="imgrelated" class="clearfix">\
-							<div>相似的图片：</div>\
-							<img v-for="relate in relates" :src="relate.path" :id="relate.id" @touchend="choosePic($event)" @click="choosePic($event)">\
-						</div>\
+				<div id="imginfo">\
+					<p><span class="vertical-center">{{info}}</span></p>\
+					<div id="imgtags" @touchend="chooseTag($event)" @click="chooseTag($event)">\
+						<span v-for="tag in tags">{{tag}}</span>\
 					</div>\
+					<div id="imgrelated" class="clearfix" @touchend="choosePic($event)" @click="choosePic($event)">\
+						<div>相似的图片：</div>\
+						<img v-for="relate in relates" :src="relate.path" :id="relate.id">\
+					</div>\
+				</div>\
 				</div>',
 			data: function () {
 				return {
@@ -175,9 +229,11 @@ loadFile("./dist/gallery_info.json", function(){
 				currView: 'picwall'
 			},
 			mounted: function () {
-				document.querySelectorAll(".list-item").forEach(function (val) {
+				//to reduce frequent DOM manipulation
+				var listItem = Array.prototype.slice.call(document.getElementsByClassName("list-item"));
+				listItem.forEach(function (val) {
 					val.addEventListener("click", function (e){
-						document.querySelectorAll(".list-item").forEach(function (val) {
+						listItem.forEach(function (val) {
 							val.children[1].style.display = "";
 						});
 						if (this.children[1].style.display == "") {
@@ -195,7 +251,7 @@ loadFile("./dist/gallery_info.json", function(){
 						}
 					});
 					val.addEventListener("touchend", function (e) {
-						document.querySelectorAll(".list-item").forEach(function (val) {
+						listItem.forEach(function (val) {
 							val.children[1].style.display = "";
 						});
 						if (this.children[1].style.display == "") {
@@ -213,12 +269,12 @@ loadFile("./dist/gallery_info.json", function(){
 					});
 				});
 				window.addEventListener("click", function () {
-					document.querySelectorAll(".list-item").forEach(function (val) {
+					listItem.forEach(function (val) {
 						val.children[1].style.display = "";
 					});
 				});
 				window.addEventListener("touchend", function () {
-					document.querySelectorAll(".list-item").forEach(function (val) {
+					listItem.forEach(function (val) {
 						val.children[1].style.display = "";
 					});
 				});
