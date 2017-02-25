@@ -17,14 +17,23 @@ function loadFile (url, callback) {
 	req.send(null);
 }
 
+if (!Object.keys) Object.keys = function(o) {
+	if (o !== Object(o))
+		throw new TypeError('Object.keys called on a non-object');
+	var k=[],p;
+		for (p in o) if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p);
+	return k;
+}
+
 loadFile("./dist/gallery_info.json", function(){
 	res = JSON.parse(this.responseText);
 	//print meta data
 	console.log(res.name + ": " + res.description);
 	console.log("Author: " + res.author);
 	//export tags information
-	var len = res.content.length;
-	for (var i = 0; i < len; i++) {
+	var length = res.content.length,
+		tag_keys;
+	for (var i = 0; i < length; i++) {
 		//read from res.content[i].date
 		var year = Math.floor(res.content[i].date / 10000);
 		if (year <= 2012) {
@@ -47,7 +56,7 @@ loadFile("./dist/gallery_info.json", function(){
 	}
 	//console.log(tag_list);
 
-
+	tag_keys = Object.keys(tag_list);
 	var Wall = {
 			template: '<div id="photos" @click="changeView($event)">\
 				<figure v-for="item in items" :id="item.id">\
@@ -58,7 +67,7 @@ loadFile("./dist/gallery_info.json", function(){
 			props: ['factors'],
 			data: function () {
 				return {
-					lazylist: Array.apply(null, new Array(res.content.length)).map(function () {return true;}),
+					lazylist: Array.apply(null, new Array(length)).map(function () {return true;}),
 					stupid: "./assets/img/blank.jpg",
 					stupidPrefix: "i_"
 				}
@@ -104,9 +113,16 @@ loadFile("./dist/gallery_info.json", function(){
 				items: function () {
 					var tmparr = [],
 		            	tmp = {},
-		            	myarr = Array.apply(null, Array(res.content.length)).map(function (x, i) { return i; });
+		            	myarr = Array.apply(null, Array(length)).map(function (x, i) { return i; }),
+		            	partialArr;
 	            	this.factors.forEach(function(val) {
-	            		myarr = _.intersection(tag_list[val], myarr);
+	            		//add partial search
+	            		partialArr = tag_keys.filter(function (tag) {
+	            			return tag.search(val) != -1;
+	            		}).reduce(function (acc, cur) {
+	            			return acc.concat(tag_list[cur])
+	            		}, []);
+	            		myarr = _.intersection(partialArr, myarr);
 	            		if ([] == myarr) {
 	            			return;
 	            		}
