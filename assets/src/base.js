@@ -1,38 +1,57 @@
-var res, 
-	tag_list = {};
+let res,
+    tag_list = {};
 
-//asynchronical XMLHttpRequest
-function loadFile (url, callback) {
-	var req = new XMLHttpRequest();
+if (!Object.keys) {
+  Object.keys = o => {
+    if (o !== Object(o)) {
+      throw new TypeError('Object.keys called on a non-object');
+    }
+    var k=[],
+        p;
+      for (p in o) {
+        if (Object.prototype.hasOwnProperty.call(o, p)) {
+          k.push(p);
+        }
+      }
+    return k;
+  }
+}
+
+//async load
+function loadFile (url, cb) {
+  if (typeof fetch === 'function') {
+    fetch(url)
+    .then(res => res.json())
+    .then(json => cb(json))
+    return;
+  }
+
+	let req = new XMLHttpRequest();
 	req.onreadystatechange = function () {
 		if (req.readyState == 4) {
 			if (req.status == 200) {
-				callback.apply(req);
+        try {
+          let res = JSON.parse(req.responseText);
+        } catch(e) {
+          console.warn(e);
+        }
+				cb(res);
 			} else {
 				console.log("Error", req.statusText);
 			}
 		}
 	};
 	req.open("GET", url, true);
-	req.send(null);
+	req.send();
 }
 
-if (!Object.keys) Object.keys = function(o) {
-	if (o !== Object(o))
-		throw new TypeError('Object.keys called on a non-object');
-	var k=[],p;
-		for (p in o) if (Object.prototype.hasOwnProperty.call(o,p)) k.push(p);
-	return k;
-}
-
-loadFile("./dist/gallery_info.json", function(){
-	res = JSON.parse(this.responseText);
+loadFile("./dist/gallery_info.json", function(res){
 	//print meta data
 	console.log(res.name + ": " + res.description);
 	console.log("Author: " + res.author);
 	//export tags information
 	var length = res.content.length,
-		tag_keys;
+	    tag_keys;
 	for (var i = 0; i < length; i++) {
 		//read from res.content[i].date
 		var year = Math.floor(res.content[i].date / 10000);
@@ -155,14 +174,14 @@ loadFile("./dist/gallery_info.json", function(){
 
 		Info = {
 			template: '<div id="display" :style="{top: scrolltop}">\
-				<aside @click="quit" @touchend="quit">×</aside>\
+				<aside @click="quit">×</aside>\
 				<figure><img :src="path"></figure>\
 				<div id="imginfo">\
 					<p><span class="vertical-center">{{info}}</span></p>\
-					<div id="imgtags" @touchend="chooseTag($event)" @click="chooseTag($event)">\
+					<div id="imgtags" @click="chooseTag($event)">\
 						<span v-for="tag in tags">{{tag}}</span>\
 					</div>\
-					<div id="imgrelated" class="clearfix" @touchend="choosePic($event)" @click="choosePic($event)">\
+					<div id="imgrelated" class="clearfix" @click="choosePic($event)">\
 						<div>相似的图片：</div>\
 						<img v-for="relate in relates" :src="relate.path" :id="relate.id">\
 					</div>\
@@ -211,9 +230,9 @@ loadFile("./dist/gallery_info.json", function(){
 						result = [parseInt(this.id)];
 					for (var i = 0; i < 4; i++) {
 						//tag list from a random tag
-						var n     = tag_list[t[_.random(t.length-1)]],
-							ran   = _.random(n.length-1),
-							count = 0;
+						var n   = tag_list[t[_.random(t.length-1)]],
+						    ran = _.random(n.length-1),
+						    count = 0;
 						//choose a random appropriate id
 						while (result.indexOf(n[ran]) != -1) {
 							n   = tag_list[t[_.random(t.length-1)]];
@@ -266,30 +285,8 @@ loadFile("./dist/gallery_info.json", function(){
 							e.stopPropagation();
 						}
 					});
-					val.addEventListener("touchend", function (e) {
-						listItem.forEach(function (val) {
-							val.children[1].style.display = "";
-						});
-						if (this.children[1].style.display == "") {
-							this.children[1].style.display = "block";
-						} else {
-							this.children[1].style.display = "";
-						}
-						if (!e){
-							var e = window.event;
-						}
-						e.cancelBubble = true;
-						if (e.stopPropagation){
-							e.stopPropagation();
-						}
-					});
 				});
 				window.addEventListener("click", function () {
-					listItem.forEach(function (val) {
-						val.children[1].style.display = "";
-					});
-				});
-				window.addEventListener("touchend", function () {
 					listItem.forEach(function (val) {
 						val.children[1].style.display = "";
 					});
