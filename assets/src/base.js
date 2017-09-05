@@ -1,9 +1,23 @@
 let res,
     tag_list = {};
 
+window.requestAnimationFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback) {
+      let currTime = +new Date(),
+          timeToCall = Math.max(0, 16 - (currTime - lastTime)),
+          id = window.setTimeout(function () {
+              callback(currTime + timeToCall);
+          }, timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+  };
+
 // async load
-function loadFile (url, cb) {
-  if (typeof fetch === 'function') {
+const loadFile = (url, cb) => {
+  if (typeof fetch === "function") {
     fetch(url)
     .then(res => res.json())
     .then(json => cb(json))
@@ -30,6 +44,33 @@ function loadFile (url, cb) {
   req.open("GET", url, true);
   req.send();
 }
+
+const easeInOutCubic = t => (t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1);
+
+const animate = (obj, prop, end, time, ease) => {
+  if (!obj || !obj[prop] || time < 100) {
+    return;
+  }
+  let start = obj[prop],
+      k = end - start,
+      timer = null,
+      tick = timestamp => {
+        if (timer === null) {
+          timer = timestamp;
+        }
+        let progress = timestamp - timer;
+        obj[prop] = start + ease(progress / time) * k;
+        if (progress < time) {
+          requestAnimationFrame(tick);
+        }
+      };
+
+  requestAnimationFrame(tick);
+}
+
+document.getElementById("totop").addEventListener("click", () => {
+  animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
+})
 
 loadFile("./dist/gallery_info.json", res => {
   // print meta data
@@ -68,7 +109,7 @@ loadFile("./dist/gallery_info.json", res => {
           <aside><span>{{item.desc}}</span></aside>\
         </figure>\
       </div>',
-    props: ['factors'],
+    props: ["factors"],
     data() {
       return {
         lazylist: Array.apply(null, new Array(length)).map(function () {return true;}),
@@ -84,7 +125,7 @@ loadFile("./dist/gallery_info.json", res => {
     },
     methods: {
       changeView(event) {
-        this.$emit('toinfo', event.target.parentElement.id);
+        this.$emit("toinfo", event.target.parentElement.id);
       },
 			lazyload(arr) {
 				// avoid meaningless loop
@@ -154,20 +195,19 @@ loadFile("./dist/gallery_info.json", res => {
           return;
         }
         // simplify lazy load for better experience
-        let self = this;
         newItem.forEach(val => {
-          self.lazylist.splice(val.id, 1, false);
+          this.lazylist.splice(val.id, 1, false);
         });
       }
     }
   };
 
   const Info = {
-    template: '<div id="display" :style="{top: scrolltop}">\
+    template: '<div id="display">\
       <aside @click="quit">×</aside>\
       <figure><img :src="path"></figure>\
       <div id="imginfo">\
-        <p><span class="vertical-center">{{info}}</span></p>\
+        <p><span class="vertical-center img-intro">{{info}}</span></p>\
         <div id="imgtags" @click="chooseTag($event)">\
           <span v-for="tag in tags">{{tag}}</span>\
         </div>\
@@ -177,24 +217,15 @@ loadFile("./dist/gallery_info.json", res => {
         </div>\
       </div>\
     </div>',
-    props: ['pid'],
+    props: ["pid"],
     data() {
       return {
-        scrolltop: "50px",
         id: this.pid
       }
     },
-    created() {
-      // get scrollY
-      const supportPageOffset = window.pageXOffset !== undefined,
-          isCSS1Compat = ((document.compatMode || "") === "CSS1Compat"),
-          y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
-
-      this.scrolltop = Math.max(50, y) + "px";
-    },
     methods: {
       chooseTag(event) {
-        this.$emit('revisetag', event.target.innerHTML);
+        this.$emit("revisetag", event.target.innerHTML);
       },
       choosePic(event) {
         const res = parseInt(event.target.id);
@@ -203,7 +234,7 @@ loadFile("./dist/gallery_info.json", res => {
         }
       },
       quit() {
-        this.$emit('revisetag');
+        this.$emit("revisetag");
       }
     },
     computed: {
@@ -254,35 +285,29 @@ loadFile("./dist/gallery_info.json", res => {
     data: {
       filter: "",
       pid: 0,
-      currView: "picwall"
+      currView: "picwall",
+      // temporarily store body scrollTop fo restoration
+      lastScrollTop: null,
+      // current index of tab
+      index: -1
     },
     mounted() {
       // to reduce frequent DOM manipulation
-      const listItem = Array.prototype.slice.call(document.getElementsByClassName("list-item"));
-      listItem.forEach(val => {
-        val.addEventListener("click", e => {
-          listItem.forEach(val => {
-            val.children[1].style.display = "";
-          });
-          if (this.children[1].style.display == "") {
-            this.children[1].style.display = "block";
-          } else {
-            this.children[1].style.display = "";
-          }
-
-          if (!e){
-            const e = window.event;
-          }
-          e.cancelBubble = true;
-          if (e.stopPropagation){
-            e.stopPropagation();
-          }
-        });
+      document.getElementById("navbar").addEventListener("click", e => {
+        let className = e.target.className,
+            id = +e.target.id;
+        if (className === "list-unit") {
+          this.addTag(e);
+        } else if (!!~className.indexOf("list-item") && this.index !== id) {
+          this.modifyIndex(id);
+        } else {
+          this.index = -1;
+        }
+        // 防止再次触发
+        e.stopPropagation();
       });
-      window.addEventListener("click", function () {
-        listItem.forEach(val => {
-          val.children[1].style.display = "";
-        });
+      window.addEventListener("click", () => {
+        this.index = -1;
       });
     },
     methods: {
@@ -302,8 +327,8 @@ loadFile("./dist/gallery_info.json", res => {
           this.filter += ",screenshot";
         }
       },
-      addTag(event) {
-        const tag = event.target.innerHTML;
+      addTag(e) {
+        const tag = e.target.innerText;
         if (this.filter == "") {
           this.filter = tag;
         }
@@ -316,7 +341,7 @@ loadFile("./dist/gallery_info.json", res => {
         if (id) {
           this.pid = id;
         }
-        this.currView = 'picinfo';
+        this.currView = "picinfo";
       },
       reviseTag(tag) {
         if (tag) {
@@ -324,6 +349,9 @@ loadFile("./dist/gallery_info.json", res => {
         } else {
           this.currView = "picwall";
         }
+      },
+      modifyIndex(newId) {
+        this.index = newId;
       }
     },
     computed: {
@@ -333,7 +361,20 @@ loadFile("./dist/gallery_info.json", res => {
     },
     watch: {
       filter() {
-        this.currView = 'picwall';
+        this.currView = "picwall";
+        this.index = -1;
+      },
+      currView(val) {
+        if (val === 'picwall') {
+          // 因为本身的渐变是0.4s...
+          setTimeout(() => {
+            requestAnimationFrame(() => {
+              window.scrollTo(0, this.lastScrollTop || 0)
+            })
+          }, 400);
+        } else {
+          this.lastScrollTop = document.body.scrollTop;
+        }
       }
     },
     components: {

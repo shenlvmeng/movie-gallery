@@ -36,7 +36,7 @@ a#brand {
   margin: 0 5px;
   float: left;
   line-height: 40px;
-  color: #ddd;
+  color: #fff;
   font-weight: bold;
   font-size: 18px;
 }
@@ -55,6 +55,7 @@ nav ul {
 .list-item{
 	margin-right: 15px;
 	font-size: 14px;
+  cursor: pointer;
 }
 li a {
   color: #fff;
@@ -73,6 +74,9 @@ li:last-child ul {
 li ul li {
   width: 100%;
   text-align: center;
+}
+li.show ul {
+  display: block;
 }
 nav input {
   height: 28px;
@@ -209,16 +213,16 @@ footer {
   line-height: 1.7em;
 }
 #display {
+  position: absolute;
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-around;
-  position: absolute;
+  justify-content: center;
   min-height: 100%;
   width: 100%;
   padding: 30px 0;
   background: rgba(51, 53, 56, .95);
-  top: 50px;
   z-index: 10;
 }
 .clearfix::after {
@@ -244,19 +248,22 @@ footer {
 #imginfo {
   float: left;
   max-width: 500px;
-  border-left: 1px solid #222;
+  margin-left: 40px;
   color: #bbb;
   font-size: 14px;
 }
 #imginfo p {
   min-height: 100px;
   line-height: 2em;
-  padding: 0 40px;
+  padding: 10px 20px;
   display: table;
 }
 .vertical-center {
   display: table-cell;
   vertical-align: middle;
+}
+.img-intro {
+  color: #eee;
 }
 #imgtags {
   padding: 20px;
@@ -276,6 +283,7 @@ footer {
 }
 #imgrelated {
   padding: 20px;
+  color: #eee;
 }
 #imgrelated img {
   height: 120px;
@@ -311,4 +319,10 @@ footer p:first-child {
 .picinfo-enter, .picinfo-leave-active {
   opacity: 0 !important;
   transform: translateY(20px);
+}
+/* lock scroll */
+#display ~ #body {
+  /* minus navbar height */
+  max-height: calc(100vh - 55px);
+  overflow-y: hidden;
 }
