@@ -70,7 +70,17 @@ const animate = (obj, prop, end, time, ease) => {
 
 document.getElementById("totop").addEventListener("click", () => {
   animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
-})
+});
+
+window.onscroll = e => {
+  let top = document.body.scrollTop,
+      totop = document.getElementById("totop");
+  if (top) {
+    totop.className = "";
+  } else{
+    totop.className = "hidden";
+  }
+}
 
 loadFile("./dist/gallery_info.json", res => {
   // print meta data
@@ -226,7 +236,7 @@ loadFile("./dist/gallery_info.json", res => {
     },
     methods: {
       chooseTag(event) {
-        this.$emit("revisetag", event.target.innerHTML);
+        this.$emit("revisetag", event.target.innerText);
       },
       choosePic(event) {
         const res = parseInt(event.target.id);
