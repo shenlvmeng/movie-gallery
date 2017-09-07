@@ -159,6 +159,7 @@ loadFile("./dist/gallery_info.json", res => {
         let tmparr = [],
             tmp = {},
             myarr = Array.apply(null, Array(length)).map(function (x, i) { return i; }),
+            partialArr,
             artialArr;
 
         this.factors.forEach(val => {
@@ -286,8 +287,6 @@ loadFile("./dist/gallery_info.json", res => {
       filter: "",
       pid: 0,
       currView: "picwall",
-      // temporarily store body scrollTop fo restoration
-      lastScrollTop: null,
       // current index of tab
       index: -1
     },
@@ -301,13 +300,13 @@ loadFile("./dist/gallery_info.json", res => {
         } else if (!!~className.indexOf("list-item") && this.index !== id) {
           this.modifyIndex(id);
         } else {
-          this.index = -1;
+          this.modifyIndex(-1);
         }
         // 防止再次触发
         e.stopPropagation();
       });
       window.addEventListener("click", () => {
-        this.index = -1;
+        this.modifyIndex(-1);
       });
     },
     methods: {
@@ -328,7 +327,7 @@ loadFile("./dist/gallery_info.json", res => {
         }
       },
       addTag(e) {
-        const tag = e.target.innerText;
+        const tag = e.target.dataset.tag;
         if (this.filter == "") {
           this.filter = tag;
         }
@@ -365,15 +364,10 @@ loadFile("./dist/gallery_info.json", res => {
         this.index = -1;
       },
       currView(val) {
-        if (val === 'picwall') {
-          // 因为本身的渐变是0.4s...
-          setTimeout(() => {
-            requestAnimationFrame(() => {
-              window.scrollTo(0, this.lastScrollTop || 0)
-            })
-          }, 400);
+        if (val === 'picinfo') {
+          document.body.className = "noscroll";
         } else {
-          this.lastScrollTop = document.body.scrollTop;
+          document.body.className = "";
         }
       }
     },

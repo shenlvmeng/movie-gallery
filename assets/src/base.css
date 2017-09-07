@@ -1,6 +1,6 @@
 html, body {
   width: 100%;
-  font-family: Helvetica, Arial, Microsoft Yahei;
+  font-family: Helvetica, Arial, "Microsoft Yahei";
 }
 body, p, figure, ul, h1, h2, h3, h4, h5 {
   margin: 0;
@@ -24,9 +24,12 @@ aside {
   position: fixed;
 }
 nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   width: 100%;
   height: 40px;
-  background-color: forestgreen;
+  background-color: #228b22;
   padding: 5px 0;
   margin-bottom: 5px;
   color: #fff;
@@ -39,6 +42,7 @@ a#brand {
   color: #fff;
   font-weight: bold;
   font-size: 18px;
+  font-style: italic;
 }
 nav img {
   height: 40px;
@@ -46,62 +50,85 @@ nav img {
   margin-right: 5px;
   margin-top: -3px;
 }
-nav ul {
-  width: 400px;
-  float: left;
-  margin-left: 30px;
-  line-height: 40px;
+#brand ~ ul {
+  margin-left: 10px;
 }
 .list-item{
-	margin-right: 15px;
+  position: relative;
+  margin: 0 10px;
 	font-size: 14px;
+  line-height: 40px;
+  color: #eee;
   cursor: pointer;
 }
-li a {
+.list-item:hover,
+.list-item:active {
   color: #fff;
 }
-li ul {
+.list-item:hover ul {
+  display: block;
+}
+.list-item ul {
   display: none;
   position: absolute;
-  margin-left: -4px;
-  width: 60px;
-  background-color: forestgreen;
+  left: -10px;
+  border-radius: 5px;
+  width: 100px;
+  background: #228b22;
+  color: #fff;
   z-index: 10;
 }
 li:last-child ul {
   width: 85px;
 }
-li ul li {
-  width: 100%;
-  text-align: center;
-}
 li.show ul {
   display: block;
 }
+.list-unit {
+  width: 100%;
+  padding: 0 15px 0 10px;
+  color: #eee;
+  box-sizing: border-box;
+}
+.list-unit:hover {
+  color: #fff;
+  background: #329b32;
+  background-origin: border-box;
+}
 nav input {
   height: 28px;
-  margin-top: 4px;
-  margin-left: 30px;
-  border: 1px solid #aaa;
-  border-radius: 5px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 3px;
   padding-left: 10px;
   outline: none;
-  float: left;
+  min-width: 250px;
   font-family: "Microsoft Yahei";
+  color: #228b22;
 }
 nav button {
+  margin: 0 5px;
+  padding: 0 15px;
+  border: 1px solid #fff;
+  border-radius: 3px;
   line-height: 30px;
+  background-color: #228b22;
   font-size: 14px;
-  color: forestgreen;
-  margin: 4px 5px 0 10px;
-  border: 1px solid #999;
-  border-radius: 5px;
-  background-color: #fff;
-  padding: 0 10px;
-  float: left;
+  color: #fff;
   outline: none;
   cursor: pointer;
   font-family: "Microsoft Yahei";
+}
+.nav-padding {
+  flex: 1;
+}
+.nav-search {
+  padding: 0 15px;
+}
+@media (max-width: 935px) {
+  .nav-search {
+    display: none;
+  }
 }
 #photos {
   /* Prevent vertical gaps */
@@ -177,11 +204,6 @@ nav button {
 		column-count:         3;
   	}
 }
-@media (max-width: 810px) {
-	nav input, nav button {
-		display: none;
-	}
-}
 @media (max-width: 800px) {
 	#photos {
 	    -moz-column-count:    2;
@@ -213,17 +235,20 @@ footer {
   line-height: 1.7em;
 }
 #display {
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
+  height: 100%;
   width: 100%;
   padding: 30px 0;
   background: rgba(51, 53, 56, .95);
-  z-index: 10;
+  z-index: 100;
+  overflow-y: scroll;
 }
 .clearfix::after {
   content: " ";
@@ -302,6 +327,7 @@ footer p:first-child {
   background-color: #666;
   opacity: .8;
   border-radius: 5px;
+  cursor: pointer;
 }
 #totop div{
   margin: 12px 7px;
@@ -320,9 +346,7 @@ footer p:first-child {
   opacity: 0 !important;
   transform: translateY(20px);
 }
-/* lock scroll */
-#display ~ #body {
-  /* minus navbar height */
-  max-height: calc(100vh - 55px);
+.noscroll {
   overflow-y: hidden;
+  overflow-x: hidden;
 }
