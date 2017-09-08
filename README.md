@@ -2,24 +2,18 @@
 
 > A project powered by Vue.js
 
-Use ```gallery_info.json``` for meta data of pictures in ```assets``` and rename pitures ascendingly from 0.
+Use `gallery_info.json` for meta data of pictures in `assets` and rename pitures ascendingly from 0.
 
-In file gallery_info.json, ```name```, ```author```, ```description``` fields are used for basic information
-of the whole photo gallery.```content``` stores the whole data.
+In file gallery_info.json, `name`, `author`, `description` fields are used for basic information
+of the whole photo gallery.`content` stores the whole data.
 
 Every item of items in ```content``` are composed of fields "date", "info", "tags" and "type".
 
-* ```date```: when this photo or picture is created
-* ```info```: description of this picture
-* ```tags```: most important part. Tags are used to identify a picture and judge relationship of other pictures
-* ```type```: the format of this picture
+* `date`: when this photo or picture is created
+* `info`: description of this picture
+* `tags`: most important part. Tags are used to identify a picture and judge relationship of other pictures
+* `type`: the format of this picture
 
-## For devolopers
+Use `npm install` to download gulp plugins to translate and minify files in `assets`.
 
-Use ```npm install --dev``` to download plugins to minify js/css/json files in ```assets```
-
-Just minify codes from 
-
-```shell
-gulp [css | js | json]
-```
+Use `gulp dev` for developing, use `gulp [css | js | json]` for deploying.
