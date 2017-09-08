@@ -1,10 +1,15 @@
 html, body {
+  min-height: 100%;
   width: 100%;
   font-family: Helvetica, Arial, "Microsoft Yahei";
 }
 body, p, figure, ul, h1, h2, h3, h4, h5 {
   margin: 0;
   padding: 0;
+}
+body {
+  min-width: 370px;
+  background: #f4f4f4;
 }
 a {
   text-decoration: none;
@@ -16,9 +21,6 @@ ul {
 }
 ul li {
   float: left;
-}
-section {
-  min-width: 600px;
 }
 aside {
   position: fixed;
@@ -107,6 +109,11 @@ nav input {
   font-family: "Microsoft Yahei";
   color: #228b22;
 }
+@media(max-width: 500px) {
+  nav input {
+    min-width: 150px;
+  }
+}
 nav button {
   margin: 0 5px;
   padding: 0 15px;
@@ -132,13 +139,14 @@ nav button {
   padding: 0 15px;
 }
 @media (max-width: 935px) {
-  .nav-search {
+  .nav-categories {
     display: none;
   }
 }
 #photos {
   display: flex;
   flex-flow: row wrap;
+  align-items: flex-start;
   justify-content: space-around;
   width: 100%;
 }
@@ -146,7 +154,6 @@ nav button {
   display: inline-block;
   width: 240px;
   margin: 0 8px;
-  vertical-align: top;
 }
 #photos figure {
   position: relative;
@@ -189,20 +196,18 @@ nav button {
   padding: 0 5px;
 }
 footer {
-  position: fixed;
-  bottom: 0;
   padding: 8px 0;
-  font-size: 12px;
-  color: #fff;
-  background: rgba(51, 53, 55,.4);
+  font-size: 14px;
+  color: #444;
   width: 100%;
   text-align: center;
-  line-height: 1.7em;
+  font-family: "Helvetica Neue", "Microsoft Yahei", serif;
+  font-weight: bold;
 }
-@media (max-width: 600px) {
-  footer {
-    display: none;
-  }
+footer .endding {
+  padding: 30px 0 50px;
+  color: #999;
+  font-weight: normal;
 }
 #display {
   position: fixed;
@@ -290,9 +295,6 @@ footer {
   margin: 10px;
   float: left;
   cursor: pointer;
-}
-footer p:first-child {
-  font-size: 14px;
 }
 #totop {
   bottom: 60px;

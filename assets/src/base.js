@@ -72,16 +72,6 @@ document.getElementById("totop").addEventListener("click", () => {
   animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
 });
 
-window.onscroll = e => {
-  let top = document.body.scrollTop,
-      totop = document.getElementById("totop");
-  if (top) {
-    totop.className = "";
-  } else{
-    totop.className = "hidden";
-  }
-}
-
 loadFile("./dist/gallery_info.json", res => {
   // print meta data
   console.log(`${res.name}: ${res.description}`);
@@ -118,13 +108,13 @@ loadFile("./dist/gallery_info.json", res => {
    * Column组件，简单地渲染一个列表
    */
   const Column = {
-    template: '<div class="wall-column">\
+    template: '<div class="wall-column" :id="`wall-${id}`">\
       <figure v-for="item in items" :id="item.id">\
         <img :src="item.path">\
         <aside><span>{{item.desc}}</span></aside>\
       </figure>\
     </div>',
-    props: ["items"]
+    props: ["items", "id"]
   }
 
   /*
@@ -132,7 +122,7 @@ loadFile("./dist/gallery_info.json", res => {
    */
   const Wall = {
     template: '<div id="photos" @click="changeView($event)">\
-        <Column v-for="items in itemsForColumns" :items="items">\
+        <Column v-for="(items, index) in itemsForColumns" :items="items" :id="index">\
       </div>',
     data() {
       return {
@@ -143,8 +133,30 @@ loadFile("./dist/gallery_info.json", res => {
     props: ["factors"],
     methods: {
       changeView(event) {
-        this.$emit("toinfo", event.target.parentElement.id);
+        if (!+event.target.parentNode.id) {
+          return;
+        }
+        this.$emit("toinfo", event.target.parentNode.id);
       },
+      handleScroll(top) {
+        if (this.items.length <= this.lastFlag) {
+          return;
+        }
+        let delta = -1;
+        for (let i = 0; i < this.columns; i++) {
+          let col = document.getElementById(`wall-${i}`);
+          // 20是为了留一些提前量
+          if (col && col.offsetTop + col.clientHeight - 20 < top + (window.innerHeight || document.documentElement.clientHeight)) {
+            delta = i;
+          }
+        }
+        if (!!++delta) {
+          this.lastFlag += delta;
+          // 直到所有列下沿都不在视口内，
+          // 同时，设置时延，保证DOM操作完成后再继续handleScroll
+          setTimeout(() => {  this.handleScroll(top); }, 0);
+        }
+      }
     },
     computed: {
       items() {
@@ -206,6 +218,8 @@ loadFile("./dist/gallery_info.json", res => {
         } else{
           totop.className = "hidden";
         }
+        // 加载新内容逻辑
+        this.handleScroll(top);
       });
       window.addEventListener("resize", e => {
         this.columns = Math.floor(document.body.clientWidth / columnWidth);

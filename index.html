@@ -17,7 +17,7 @@
     <section id="navbar">
       <nav>
         <a href="#" id="brand"><img src="./assets/img/favicon.png">PhotoGallery</a>
-        <ul>
+        <ul class="nav-categories">
           <li
             class="list-item"
             :class="{show: this.index === 0}"
@@ -95,7 +95,7 @@
         </ul>
         <div class="nav-padding"></div>
         <div class="nav-search">
-          <input type="text" name="tags" placeholder="按标签搜索，如：剧情" v-model="filter">
+          <input type="text" name="tags" placeholder="按标签搜索，如：精选,王" v-model="filter">
           <button @click="addPreface">搜海报</button>
           <button @click="addShot">搜片断</button>
         </div>
@@ -109,8 +109,8 @@
     <div class="arrow-up"></div>
   </aside>
   <footer>
-    <p>&copy; shenlvmeng 2017</p>
-    <p>使用半角逗号隔开标签，照片信息中的tag亦可以点击</p>
+    <div class="endding"> ———— 🌞 到底了，试试别的标签吧~ 🌞 ———— </div>
+    <div>&copy; shenlvmeng 2017</div>
   </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
