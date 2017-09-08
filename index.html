@@ -12,7 +12,7 @@
 <body>
   <div id="app">
     <transition name="picinfo">
-      <picinfo v-if="currView == 'picinfo'" :pid="pid" class="clearfix" @revisetag="reviseTag">
+      <picinfo v-if="currView == 'picinfo'" :pid="pid" @revisetag="reviseTag">
     </transition>
     <section id="navbar">
       <nav>
@@ -102,9 +102,7 @@
       </nav>
     </section>
     <section id="body">
-      <div>
-        <picwall :factors="factors" @toinfo="toInfo">
-      </div>
+      <picwall :factors="factors" @toinfo="toInfo">
     </section>
   </div>
   <aside id="totop" class="hidden">

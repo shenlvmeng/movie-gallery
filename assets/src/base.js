@@ -88,6 +88,7 @@ loadFile("./dist/gallery_info.json", res => {
   console.log(`Author: ${res.author}`);
   // export tags information
   const length = res.content.length;
+  const columnWidth = 250 + 16;
   let tag_keys;
   for (let i = 0; i < length; i++) {
     // read from res.content[i].date
@@ -112,58 +113,39 @@ loadFile("./dist/gallery_info.json", res => {
   }
 
   tag_keys = Object.keys(tag_list);
+
+  /*
+   * Column组件，简单地渲染一个列表
+   */
+  const Column = {
+    template: '<div class="wall-column">\
+      <figure v-for="item in items" :id="item.id">\
+        <img :src="item.path">\
+        <aside><span>{{item.desc}}</span></aside>\
+      </figure>\
+    </div>',
+    props: ["items"]
+  }
+
+  /*
+   * Wall组件，组织数据，处理scroll和resize事件
+   */
   const Wall = {
     template: '<div id="photos" @click="changeView($event)">\
-        <figure v-for="item in items" :id="item.id">\
-          <img :src="(!! lazylist && lazylist[item.id]) ?  stupid : item.path" :class="{blankimg: (!! lazylist && lazylist[item.id])}" :ref="stupidPrefix + item.id">\
-          <aside><span>{{item.desc}}</span></aside>\
-        </figure>\
+        <Column v-for="items in itemsForColumns" :items="items">\
       </div>',
-    props: ["factors"],
     data() {
       return {
-        lazylist: Array.apply(null, new Array(length)).map(function () {return true;}),
-        stupid: "./assets/img/blank.jpg",
-        stupidPrefix: "i_"
+        columns: Math.floor(document.body.clientWidth / columnWidth),
+        lastFlag: Math.floor(document.body.clientWidth / columnWidth) * 5 - 1
       }
     },
-    mounted() {
-      // first load
-      this.lazyload();
-      window.addEventListener("scroll", this.lazyload);
-      window.addEventListener("resize", this.lazyload);
-    },
+    props: ["factors"],
     methods: {
       changeView(event) {
         this.$emit("toinfo", event.target.parentElement.id);
       },
-			lazyload(arr) {
-				// avoid meaningless loop
-				if ([] === this.lazylist) {
-					return;
-				}
-				let viewportTop = (window.innerHeight || document.documentElement.clientHeight) + (document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset),
-				    self = this;
-				// search for lazy images
-				// DOM manipulation
-				this.items.forEach(function (val) {
-					//jump over loaded images
-					if (self.lazylist[val.id] == false) {
-						return;
-					}
-					// load lazy images
-					var imgNode = self.$refs["i_" + val.id][0];
-					// reduce DOM manipulation
-					// just modify status data and let Vue do rendering matters
-					if (imgNode.parentElement.offsetTop < viewportTop) {
-						self.lazylist.splice(val.id, 1, false);
-					}
-				});
-				if (-1 == this.lazylist.indexOf(true)) {
-					this.lazylist = [];
-				}
-			}
-		},
+    },
     computed: {
       items() {
         let tmparr = [],
@@ -183,10 +165,11 @@ loadFile("./dist/gallery_info.json", res => {
           if ([] == myarr) {
             return;
           }
-        	//console.log(myarr);
+          //console.log(myarr);
         });
 
-        for (let i = 0, len = myarr.length; i < len; i++) {
+        // 倒序排列
+        for (let i = myarr.length - 1; i >= 0; i--) {
           if (tmp[myarr[i]] == undefined) {
             tmp[myarr[i]] = 1;
             tmparr.push({
@@ -197,21 +180,43 @@ loadFile("./dist/gallery_info.json", res => {
           }
         }
         return tmparr;
+      },
+      itemsForColumns() {
+        let ret = Array.apply(null, Array(this.columns)).map(() => []);
+        this.items.slice(0, this.lastFlag + 1).forEach((item, i) => {
+          ret[i % this.columns].push(item);
+        })
+        // 每列先只加载5个
+        return ret;
       }
-		},
+    },
     watch: {
-      items(newItem) {
-        // listen to factor changes
-        if ([] === this.lazylist) {
-          return;
-        }
-        // simplify lazy load for better experience
-        newItem.forEach(val => {
-          this.lazylist.splice(val.id, 1, false);
-        });
+      items() {
+        // 设置了筛选条件后，lastFlag需要重新开始累加
+        this.lastFlag = Math.floor(document.body.clientWidth / columnWidth) * 5 - 1;
       }
+    },
+    mounted() {
+      window.addEventListener("scroll", e => {
+        // 回到开始按键逻辑
+        let top = document.body.scrollTop,
+            totop = document.getElementById("totop");
+        if (top) {
+          totop.className = "";
+        } else{
+          totop.className = "hidden";
+        }
+      });
+      window.addEventListener("resize", e => {
+        this.columns = Math.floor(document.body.clientWidth / columnWidth);
+        // 已经展示过的图片就不要隐藏了
+        this.lastFlag = Math.max(this.columns * 5 - 1, this.lastFlag);
+      });
+    },
+    components: {
+      Column
     }
-  };
+  }
 
   const Info = {
     template: '<div id="display">\
