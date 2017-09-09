@@ -238,10 +238,12 @@ loadFile("./dist/gallery_info.json", res => {
         // 设置了筛选条件后，lastFlag和loadedCount需要重新开始累加
         this.lastFlag = Math.floor(document.body.clientWidth / columnWidth) * 5 - 1;
         this.isHidden = !newItems.length;
+        // 防止有图片加载失败，设置遮罩超时时间为3s
+        setTimeout(() => { this.isHidden = true }, 3000);
         this.loadedCount = 0;
       },
-      loadedCount() {
-        if (this.loadedCount >= Math.min(this.lastFlag + 1, this.items.length)) {
+      loadedCount(newCount) {
+        if (newCount >= Math.min(this.lastFlag + 1, this.items.length)) {
           console.log("全部加载完成");
           this.isHidden = true;
         } else {
