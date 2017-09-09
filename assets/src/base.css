@@ -8,7 +8,7 @@ body, p, figure, ul, h1, h2, h3, h4, h5 {
   padding: 0;
 }
 body {
-  min-width: 370px;
+  min-width: 300px;
   background: #f4f4f4;
 }
 a {
@@ -111,7 +111,10 @@ nav input {
 }
 @media(max-width: 500px) {
   nav input {
-    min-width: 150px;
+    min-width: 200px;
+  }
+  .slogan {
+    display: none;
   }
 }
 nav button {
@@ -241,6 +244,7 @@ footer .endding {
 }
 #display figure {
   max-width: 100%;
+  padding: 0 20px;
 }
 #display figure img {
   width: 100%;
@@ -309,6 +313,22 @@ footer .endding {
 }
 #totop div{
   margin: 12px 7px;
+}
+#hint {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  background-image: linear-gradient(to bottom, rgba(50, 55, 60, .3), rgba(50, 55, 60, 1));
+  color: #fff;
+  font-size: 14px;
+  transition: opacity .5s;
+}
+#close {
+  font-size: 18px;
+  margin-right: 10px;
 }
 .arrow-up {
   width: 0;

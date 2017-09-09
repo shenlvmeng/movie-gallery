@@ -68,9 +68,20 @@ const animate = (obj, prop, end, time, ease) => {
   requestAnimationFrame(tick);
 }
 
+const isMobile = () => {
+  return navigator.userAgent.match(/Android|iPhone|iPod|Opera Mini|webOS|Windows Phone|IEMobile|BlackBerry/i);
+}
+
 document.getElementById("totop").addEventListener("click", () => {
   animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
 });
+
+if (isMobile()) {
+  document.getElementById("close").parentNode.className = "";
+  document.getElementById("close").addEventListener("click", e => {
+    e.target.parentNode.className = "hidden";
+  })
+}
 
 loadFile("./dist/gallery_info.json", res => {
   // print meta data
