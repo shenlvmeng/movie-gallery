@@ -84,15 +84,15 @@ if (isMobile()) {
 }
 
 loadFile("./dist/meta.json", res => {
-  // print meta data
+  // 打印meta data
   console.log(`${res.name}: ${res.description}`);
   console.log(`Author: ${res.author}`);
-  // export tags information
+
   const length = res.content.length;
   const columnWidth = 250 + 16;
   let tag_keys;
   for (let i = 0; i < length; i++) {
-    // read from res.content[i].date
+    // 从date字段读取
     let year = Math.floor(res.content[i].date / 10000);
     if (year <= 2012) {
       year = "~2012";
@@ -103,7 +103,7 @@ loadFile("./dist/meta.json", res => {
     } else {
       tag_list[year].push(i);
     }
-    // read from res.content[i].tags
+    // 从tags字段读取
     res.content[i].tags.forEach(function (val) {
       if (!tag_list[val]) {
         tag_list[val] = [i];
@@ -208,7 +208,7 @@ loadFile("./dist/meta.json", res => {
           if ([] == myarr) {
             return;
           }
-          //console.log(myarr);
+          // console.log(myarr);
         });
 
         // 倒序排列
@@ -283,6 +283,9 @@ loadFile("./dist/meta.json", res => {
     }
   }
 
+  /*
+   * Info组件，展示图片的详细信息，包括介绍和相似图片。
+   */
   const Info = {
     template: '<div id="display">\
       <aside @click="quit">×</aside>\
@@ -367,11 +370,11 @@ loadFile("./dist/meta.json", res => {
       filter: "",
       pid: 0,
       currView: "picwall",
-      // current index of tab
+      // 当前活动的tab索引
       index: -1
     },
     mounted() {
-      // to reduce frequent DOM manipulation
+      // 减少DOM修改
       document.getElementById("navbar").addEventListener("click", e => {
         let className = e.target.className,
             id = +e.target.id;

@@ -11,11 +11,11 @@ Every item of items in `content` are composed of fields "date", "info", "tags" a
 
 - **date**: when this photo or picture is created
 - **info**: description of this picture
-- **tags*: most important part. Tags are used to describe a picture and judge relationship of other pictures
+- **tags**: most important part. Tags are used to describe a picture and judge relationship of other pictures
 - **type**: the format of this picture
 
 Use `npm install` to download gulp plugins to translate and minify files in `assets`.
 
 Use `gulp dev` for developing, use `gulp [css | js | json]` for deploying.
 
-p.s. Pictures in this site are hosted in image hosting server [Qiniu](https://qiniu.com).
+p.s.: Pictures in this site are hosted in image hosting server [Qiniu](https://qiniu.com).
