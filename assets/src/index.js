@@ -1,6 +1,8 @@
 let res,
     tag_list = {};
 
+const prefix = "http://ow5o14n5d.bkt.clouddn.com/";
+
 window.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -216,7 +218,7 @@ loadFile("./dist/meta.json", res => {
             tmparr.push({
               id: myarr[i],
               desc: res.content[myarr[i]].info,
-              path: `http://ow5o14n5d.bkt.clouddn.com/${myarr[i]}.${res.content[myarr[i]].type}-compress`
+              path: `${prefix}${myarr[i]}.${res.content[myarr[i]].type}-compress`
             });
           }
         }
@@ -318,7 +320,7 @@ loadFile("./dist/meta.json", res => {
     },
     computed: {
       path() {
-        return `http://ow5o14n5d.bkt.clouddn.com/${this.id}.${res.content[this.id].type}-compress`;
+        return `${prefix}${this.id}.${res.content[this.id].type}-compress`;
       },
       info() {
         return res.content[this.id].info;
@@ -343,7 +345,7 @@ loadFile("./dist/meta.json", res => {
             // in case of infinite loop
             if (count > 20) {
               result.shift();
-              return result.map(val => `http://ow5o14n5d.bkt.clouddn.com/${val}.${res.content[val].type}-compress`);
+              return result.map(val => `${prefix}${val}.${res.content[val].type}-compress`);
             }
           }
           result.push(n[ran]);
@@ -351,7 +353,7 @@ loadFile("./dist/meta.json", res => {
         result.shift();
         return result.map(val => {
           return {
-            path: `http://ow5o14n5d.bkt.clouddn.com/${val}.${res.content[val].type}-compress`,
+            path: `${prefix}${val}.${res.content[val].type}-compress`,
             id: val
           }
         });
