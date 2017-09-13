@@ -68,9 +68,7 @@ const animate = (obj, prop, end, time, ease) => {
   requestAnimationFrame(tick);
 }
 
-const isMobile = () => {
-  return navigator.userAgent.match(/Android|iPhone|iPod|Opera Mini|webOS|Windows Phone|IEMobile|BlackBerry/i);
-}
+const isMobile = () => navigator.userAgent.match(/Android|iPhone|iPod|Opera Mini|webOS|Windows Phone|IEMobile|BlackBerry/i);
 
 document.getElementById("totop").addEventListener("click", () => {
   animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
@@ -83,7 +81,7 @@ if (isMobile()) {
   })
 }
 
-loadFile("./dist/gallery_info.json", res => {
+loadFile("./dist/meta.json", res => {
   // print meta data
   console.log(`${res.name}: ${res.description}`);
   console.log(`Author: ${res.author}`);
@@ -200,7 +198,7 @@ loadFile("./dist/gallery_info.json", res => {
         this.factors.forEach(val => {
           // add partial search
           partialArr = tag_keys.filter(function(tag) {
-            return tag.search(val) != -1;
+            return tag.toLowerCase().includes(val.toLowerCase());
           }).reduce(function (acc, cur) {
             return acc.concat(tag_list[cur])
           }, []);
@@ -218,7 +216,7 @@ loadFile("./dist/gallery_info.json", res => {
             tmparr.push({
               id: myarr[i],
               desc: res.content[myarr[i]].info,
-              path: `./assets/img/${myarr[i]}.${res.content[myarr[i]].type}`
+              path: `http://ow5o14n5d.bkt.clouddn.com/${myarr[i]}.${res.content[myarr[i]].type}-compress`
             });
           }
         }
@@ -244,10 +242,18 @@ loadFile("./dist/gallery_info.json", res => {
       },
       loadedCount(newCount) {
         if (newCount >= Math.min(this.lastFlag + 1, this.items.length)) {
-          console.log("全部加载完成");
+          // console.log("全部加载完成");
           this.isHidden = true;
         } else {
           // console.log("Loading...");
+        }
+      },
+      isHidden(newStatus) {
+        if (!newStatus) {
+          document.body.scrollTop = 0;
+          document.body.className = "noscroll";
+        } else {
+          document.body.className = "";
         }
       }
     },
@@ -312,7 +318,7 @@ loadFile("./dist/gallery_info.json", res => {
     },
     computed: {
       path() {
-        return `./assets/img/${this.id}.${res.content[this.id].type}`;
+        return `http://ow5o14n5d.bkt.clouddn.com/${this.id}.${res.content[this.id].type}-compress`;
       },
       info() {
         return res.content[this.id].info;
@@ -337,7 +343,7 @@ loadFile("./dist/gallery_info.json", res => {
             // in case of infinite loop
             if (count > 20) {
               result.shift();
-              return result.map(val => `./assets/img/${val}.${res.content[val].type}`);
+              return result.map(val => `http://ow5o14n5d.bkt.clouddn.com/${val}.${res.content[val].type}-compress`);
             }
           }
           result.push(n[ran]);
@@ -345,7 +351,7 @@ loadFile("./dist/gallery_info.json", res => {
         result.shift();
         return result.map(val => {
           return {
-            path: `./assets/img/${val}.${res.content[val].type}`,
+            path: `http://ow5o14n5d.bkt.clouddn.com/${val}.${res.content[val].type}-compress`,
             id: val
           }
         });
