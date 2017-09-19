@@ -1,7 +1,10 @@
 let res,
     tag_list = {};
 
+// 图床前缀
 const prefix = "http://ow5o14n5d.bkt.clouddn.com/";
+// 相关图片展示个数
+const relatedCount = 4;
 
 window.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -71,6 +74,18 @@ const animate = (obj, prop, end, time, ease) => {
 }
 
 const isMobile = () => navigator.userAgent.match(/Android|iPhone|iPod|Opera Mini|webOS|Windows Phone|IEMobile|BlackBerry/i);
+
+const shuffle = nums => {
+  let len = nums.length;
+  while (len > 0) {
+    let index = Math.floor(Math.random() * len);
+    len--;
+    [nums[index], nums[len]] = [nums[len], nums[index]];
+  }
+  return nums;
+}
+
+const intersection = (a, b) => a.filter(num => !!~b.indexOf(num));
 
 document.getElementById("totop").addEventListener("click", () => {
   animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
@@ -198,13 +213,13 @@ loadFile("./dist/meta.json", res => {
             artialArr;
 
         this.factors.forEach(val => {
-          // add partial search
+          // 部分搜索
           partialArr = tag_keys.filter(function(tag) {
             return tag.toLowerCase().includes(val.toLowerCase());
           }).reduce(function (acc, cur) {
             return acc.concat(tag_list[cur])
           }, []);
-          myarr = _.intersection(partialArr, myarr);
+          myarr = intersection(partialArr, myarr);
           if ([] == myarr) {
             return;
           }
@@ -296,8 +311,8 @@ loadFile("./dist/meta.json", res => {
           <span v-for="tag in tags">{{tag}}</span>\
         </div>\
         <div id="imgrelated" class="clearfix" @click="choosePic($event)">\
-          <div>相似的图片：</div>\
-          <img v-for="relate in relates" :src="relate.path" :id="relate.id">\
+          <div>相关的图片：</div>\
+          <img v-for="relate in relates" :src="relate.path" :id="relate.id" :title="relate.title">\
         </div>\
       </div>\
     </div>',
@@ -312,7 +327,7 @@ loadFile("./dist/meta.json", res => {
         this.$emit("revisetag", event.target.innerText);
       },
       choosePic(event) {
-        const res = parseInt(event.target.id);
+        const res = +event.target.id;
         if (res >= 0){
           this.id = res;
         }
@@ -331,33 +346,44 @@ loadFile("./dist/meta.json", res => {
       tags() {
         return res.content[this.id].tags;
       },
+      /* 相关图片逻辑
+       * 寻找图片最有特征的4个标签（标签对应图片少），寻找相同标签的其他图片
+       * 考虑到标签数目不大，可以直接升序排序标签
+       * 注意两点：1. 不一定能找到4张；2，找出来的图不能重复
+       */
       relates() {
-        const t = this.tags;
-        let result = [parseInt(this.id)];
+        // 升序排序并过滤掉单独的tag
+        const t = this.tags.sort((t, s) => tag_list[t].length - tag_list[s].length).filter(t => tag_list[t].length > 1);
+        // 预存id，避免自身被包含进去
+        let idSet = new Set([+this.id]);
+        // 阈值系数，用来控制弹性范围
+        const threshold = 2;
 
-        for (var i = 0; i < 4; i++) {
-          // tag list from a random tag
-          let n   = tag_list[t[_.random(t.length - 1)]],
-              ran = _.random(n.length - 1),
-              count = 0;
-					// choose a random appropriate id
-          while (result.indexOf(n[ran]) != -1) {
-            n   = tag_list[t[_.random(t.length - 1)]];
-            ran = _.random(n.length - 1);
-            count++;
-            // in case of infinite loop
-            if (count > 20) {
-              result.shift();
-              return result.map(val => `${prefix}${val}.${res.content[val].type}-compress`);
-            }
+        let result = [];
+
+        // 向result池中加入所有备选，直到到达阈值
+        // 使用Set排除重复
+        for (let i = 0, len = t.length; i < len; i++) {
+          if (idSet.size >= threshold * relatedCount) {
+            break;
           }
-          result.push(n[ran]);
+          tag_list[t[i]].forEach(id => {
+            if (!idSet.has(id)) {
+              idSet.add(id);
+              result.push({
+                id,
+                relatedTag: t[i]
+              })
+            }
+          });
         }
-        result.shift();
+        // 打乱后截取固定长度
+        result = shuffle(result).slice(0, relatedCount);
         return result.map(val => {
           return {
-            path: `${prefix}${val}.${res.content[val].type}-compress`,
-            id: val
+            path: `${prefix}${val.id}.${res.content[val.id].type}-compress`,
+            id: val.id,
+            title: val.relatedTag
           }
         });
       }
