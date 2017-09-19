@@ -175,9 +175,6 @@ nav button {
 #photos figure img {
   width: 100%;
 }
-#photos .blankimg {
-  min-height: 150px;
-}
 #photos figure aside {
   position: absolute;
   bottom: 0;
@@ -243,7 +240,7 @@ footer .endding {
   cursor: pointer;
 }
 #display figure {
-  max-width: 100%;
+  max-width: 800px;
   padding: 0 20px;
 }
 #display figure img {
