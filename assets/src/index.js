@@ -5,6 +5,8 @@ let res,
 const prefix = "http://ow5o14n5d.bkt.clouddn.com/";
 // 相关图片展示个数
 const relatedCount = 4;
+// meta.json地址
+const metaUrl = `${prefix}meta.json`;
 
 window.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -98,7 +100,7 @@ if (isMobile()) {
   })
 }
 
-loadFile("./dist/meta.json", res => {
+loadFile(metaUrl, res => {
   // 打印meta data
   console.log(`${res.name}: ${res.description}`);
   console.log(`Author: ${res.author}`);
