@@ -6,7 +6,7 @@ const prefix = "http://ow5o14n5d.bkt.clouddn.com/";
 // 相关图片展示个数
 const relatedCount = 4;
 // meta.json地址
-const metaUrl = `${prefix}meta.json`;
+const metaUrl = `https://ow5o14n5d.bkt.clouddn.com/meta.json`;
 
 window.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
