@@ -242,6 +242,7 @@ footer .endding {
 #display figure {
   max-width: 800px;
   padding: 0 20px;
+  cursor: pointer;
 }
 #display figure img {
   width: 100%;

@@ -308,7 +308,7 @@ loadFile(metaUrl, res => {
   const Info = {
     template: '<div id="display">\
       <aside @click="quit">×</aside>\
-      <figure><img :src="path"></figure>\
+      <figure><img :src="path" title="查看原图" @click="checkFullSize"></figure>\
       <div id="imginfo">\
         <p><span class="vertical-center img-intro">{{info}}</span></p>\
         <div id="imgtags" @click="chooseTag($event)">\
@@ -335,6 +335,9 @@ loadFile(metaUrl, res => {
         if (res >= 0){
           this.id = res;
         }
+      },
+      checkFullSize() {
+        window.open(this.path);
       },
       quit() {
         this.$emit("revisetag");
