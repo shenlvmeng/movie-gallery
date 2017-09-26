@@ -6,7 +6,9 @@ const prefix = "http://ow5o14n5d.bkt.clouddn.com/";
 // 相关图片展示个数
 const relatedCount = 4;
 // meta.json地址
-const metaUrl = `http://ow5o14n5d.bkt.clouddn.com/meta.json`;
+// 根据年月选择，避免长期缓存
+const d = new Date();
+const metaUrl = `http://ow5o14n5d.bkt.clouddn.com/meta-${d.getFullYear()}-${d.getMonth()+1}.json`;
 
 window.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
