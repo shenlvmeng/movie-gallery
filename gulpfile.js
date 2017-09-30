@@ -23,7 +23,7 @@ gulp.task('css', function () {
 });
 
 gulp.task('json', function () {
-	return gulp.src('assets/src/meta.json')
+	return gulp.src('assets/src/meta*.json')
 		.pipe(jsonminify())
 		.pipe(gulp.dest('dist'))
 });

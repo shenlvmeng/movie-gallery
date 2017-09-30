@@ -92,6 +92,7 @@ const shuffle = nums => {
 const intersection = (a, b) => a.filter(num => !!~b.indexOf(num));
 
 document.getElementById("totop").addEventListener("click", () => {
+  animate(document.documentElement, "scrollTop", 0, 1000, easeInOutCubic);
   animate(document.body, "scrollTop", 0, 1000, easeInOutCubic);
 });
 
@@ -279,9 +280,11 @@ loadFile(metaUrl, res => {
       }
     },
     mounted() {
+      // 防止有图片加载失败，设置遮罩超时时间为3s
+      setTimeout(() => { this.isHidden = true }, 3000);
       window.addEventListener("scroll", e => {
         // 回到开始按键逻辑
-        let top = document.body.scrollTop,
+        let top = document.body.scrollTop || document.documentElement.scrollTop,
             totop = document.getElementById("totop");
         if (top) {
           totop.className = "";
