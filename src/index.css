@@ -216,11 +216,10 @@ footer .endding {
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-  padding: 30px 0;
+  padding: 60px 0;
   background: rgba(51, 53, 56, .95);
   z-index: 100;
   overflow-y: scroll;
@@ -233,8 +232,8 @@ footer .endding {
 }
 #display aside {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 0;
+  left: 20px;
   font-size: 60px;
   color: #666;
   cursor: pointer;
@@ -246,6 +245,7 @@ footer .endding {
 }
 #display figure img {
   width: 100%;
+  padding-bottom: 60px;
 }
 #imginfo {
   float: left;

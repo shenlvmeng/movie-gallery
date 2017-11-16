@@ -11,8 +11,16 @@ gulp.task('js', function () {
     .pipe(webpack({
       module: {
         rules: [
-          { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+          { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
+          { test: /\.vue$/, loader: 'vue-loader'},
+          { test: /\.(png|jpg|gif|svg)$/, loader: 'file-loader', options: { name: '[name].[ext]?[hash]' } }
         ]
+      },
+      resolve: {
+        alias: {
+          'vue$': 'vue/dist/vue.esm.js'
+        },
+        extensions: ['*', '.js', '.vue', '.json']
       }
     }))
     .pipe(rename("index.js"))
@@ -48,9 +56,9 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch('assets/src/*.js', ['js']);
-  gulp.watch('assets/src/*.css', ['css']);
-  gulp.watch('assets/src/*.json', ['json']);
+  gulp.watch(['src/*.js', 'src/*.vue'], ['js']);
+  gulp.watch('src/*.css', ['css']);
+  gulp.watch('src/*.json', ['json']);
 })
 
 gulp.task('assets', ['json', 'css', 'js']);
