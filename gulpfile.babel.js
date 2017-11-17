@@ -56,7 +56,7 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['src/*.js', 'src/*.vue'], ['js']);
+  gulp.watch(['src/*.js', 'src/**/*.js', 'src/**/*.vue'], ['js']);
   gulp.watch('src/*.css', ['css']);
   gulp.watch('src/*.json', ['json']);
 })
