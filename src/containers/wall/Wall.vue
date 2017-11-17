@@ -1,5 +1,5 @@
 <template>
-<div id="photos" @click="changeView($event)">
+<div id="photos" @click="changeView">
   <aside class="loading" v-if="!isHidden">
     <div class="spinner">
       <div class="bounce1"></div>
@@ -38,13 +38,13 @@ export default {
       isHidden: false,
     }
   },
-  props: ["factors", "res", "tagList", "tagKeys"],
+  props: ["factors", "res", "tagList", "tagKeys", "currView"],
   methods: {
-    changeView(event) {
-      if (!+event.target.parentNode.id) {
+    changeView(e) {
+      if (!+e.target.parentNode.id) {
         return;
       }
-      this.$emit("toinfo", event.target.parentNode.id);
+      this.$emit("toinfo", e.target.parentNode.id);
     },
     handleScroll(top) {
       if (this.items.length <= this.lastFlag) {
@@ -134,7 +134,7 @@ export default {
       if (!newStatus) {
         document.body.scrollTop = 0;
         document.body.className = "noscroll";
-      } else {
+      } else if (this.currView === 'picwall') {
         document.body.className = "";
       }
     }

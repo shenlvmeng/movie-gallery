@@ -4,12 +4,17 @@
     <figure><img :src="path" title="查看原图" @click="checkFullSize"></figure>
     <div id="imginfo">
       <p><span class="vertical-center img-intro">{{info}}</span></p>
-      <div id="imgtags" @click="chooseTag($event)">
+      <div id="imgtags" @click="chooseTag">
         <span v-for="tag in tags">{{tag}}</span>
       </div>
-      <div id="imgrelated" class="clearfix" @click="choosePic($event)">
+      <div id="imgrelated" class="clearfix" @click="choosePic">
         <div>相关的图片：</div>
-        <img v-for="relate in relates" :src="relate.path" :id="relate.id" :title="relate.title">
+        <img 
+          v-for="relate in relates" 
+          :src="relate.path" 
+          :id="relate.id" 
+          :title="relate.title"
+        >
       </div>
     </div>
   </div>
@@ -19,7 +24,7 @@
  * Info组件，展示图片的详细信息，包括介绍和相似图片。
  */
 import { prefix, relatedCount } from '../../constants/';
-import { shuffle } from '../../helper/utils';
+import { shuffle, setUrlHash } from '../../helper/utils';
 
 export default {
   name: 'Info',
@@ -30,12 +35,15 @@ export default {
     }
   },
   methods: {
-    chooseTag(event) {
-      this.$emit("revisetag", event.target.innerText);
+    chooseTag(e) {
+      if (e.target.tagName.toLowerCase() === 'span') {
+        this.$emit("revisetag", e.target.innerText);
+      }
     },
-    choosePic(event) {
-      const id = +event.target.id;
+    choosePic(e) {
+      const id = +e.target.id;
       if (id >= 0){
+        setUrlHash(`!${id}`);
         this.id = id;
       }
     },

@@ -101,7 +101,8 @@
       </nav>
     </section>
     <section id="body">
-      <picwall 
+      <picwall
+        :currView="currView"
         :factors="factors" 
         :tagKeys="tagKeys"
         :tagList="tagList"
@@ -112,6 +113,7 @@
   </div>
 </template>
 <script>
+import { setUrlHash } from './helper/utils';
 import Wall from './containers/wall/Wall.vue';
 import Info from './containers/info/Info.vue';
 
@@ -145,6 +147,8 @@ export default {
     window.addEventListener("click", () => {
       this.modifyIndex(-1);
     });
+    // 处理hash
+    location.hash && this.handleHash(location.hash.substr(1));
   },
   methods: {
     addPreface() {
@@ -174,10 +178,15 @@ export default {
     },
     toInfo(id) {
       //console.log(id);
+      // 越界检测
+      if (id < 0 || id >= this.res.content.length) {
+        return;
+      }
       if (id) {
         this.pid = id;
       }
       this.currView = "picinfo";
+      setUrlHash(`!${id}`);
     },
     reviseTag(tag) {
       if (tag) {
@@ -188,6 +197,18 @@ export default {
     },
     modifyIndex(newId) {
       this.index = newId;
+    },
+    handleHash(hash) {
+      if (hash[0] === '!') {
+        // 图片详情
+        let id = +hash.substr(1)
+        if (typeof id === 'number') {
+          this.toInfo(id);
+        }
+      } else {
+        // 关键词检索
+        this.filter = hash.replace(/\//g, ',');
+      }
     }
   },
   computed: {
@@ -205,6 +226,7 @@ export default {
         document.body.className = "noscroll";
       } else {
         document.body.className = "";
+        setUrlHash(this.filter.replace(/,/g, '/'));
       }
     }
   },

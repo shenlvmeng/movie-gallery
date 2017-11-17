@@ -84,3 +84,7 @@ export function shuffle(nums) {
 export function intersection(a, b) {
   return a.filter(num => !!~b.indexOf(num));
 }
+
+export function setUrlHash(hash) {
+  location.hash = hash.replace(/^\#+/, '');
+}
