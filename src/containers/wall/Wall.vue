@@ -98,11 +98,12 @@ export default {
           tmparr.push({
             id: myarr[i],
             desc: this.res.content[myarr[i]].info,
+            date: this.res.content[myarr[i]].date,
             path: `${prefix}${myarr[i]}.${this.res.content[myarr[i]].type}-compress`
           });
         }
       }
-      return tmparr;
+      return tmparr.sort((item1, item2) => item2.date - item1.date);
     },
     itemsForColumns() {
       let ret = Array.apply(null, Array(this.columns)).map(() => []);
