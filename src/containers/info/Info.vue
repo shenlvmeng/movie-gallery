@@ -1,9 +1,17 @@
 <template>
 	<div id="display" @click="quit">
     <aside>×</aside>
-    <figure><img :src="path" title="查看原图" @click="checkFullSize"></figure>
+    <figure>
+      <img 
+        :src="path" 
+        title="查看原图" 
+        @click="checkFullSize"
+      >
+    </figure>
     <div id="imginfo">
-      <p><span class="vertical-center img-intro">{{info}}</span></p>
+      <p>
+        <span class="vertical-center img-intro">{{info}}</span>
+      </p>
       <div id="imgtags" @click="chooseTag">
         <span v-for="tag in tags">{{tag}}</span>
       </div>
