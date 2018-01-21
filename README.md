@@ -20,9 +20,9 @@
 ```bash
 npm install
 # 开发环境
-gulp dev
-# release
 gulp
+# release
+gulp release
 # 单独release
 gulp [css | js | json]
 ```

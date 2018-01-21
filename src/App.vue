@@ -83,6 +83,7 @@
             id="4"
           >按观影时间 ▾
             <ul>
+              <li class="list-unit" data-tag="2018">2018</li>
               <li class="list-unit" data-tag="2017">2017</li>
               <li class="list-unit" data-tag="2016">2016</li>
               <li class="list-unit" data-tag="2015">2015</li>
@@ -126,7 +127,9 @@ export default {
       pid: 0,
       currView: "picwall",
       // 当前活动的tab索引
-      index: -1
+      index: -1,
+      // 临时记录滚动位置
+      scrollY: 0,
     }
   },
   mounted() {
@@ -152,7 +155,7 @@ export default {
   },
   methods: {
     addPreface() {
-      if (this.filter == "") {
+      if (this.filter === "") {
         this.filter = "preface";
       }
       if (this.factors.indexOf("preface") == -1) {
@@ -160,7 +163,7 @@ export default {
       }
     },
     addShot() {
-      if (this.filter == "") {
+      if (this.filter === "") {
         this.filter = "screenshot";
       }
       if (this.factors.indexOf("screenshot") == -1) {
@@ -169,7 +172,7 @@ export default {
     },
     addTag(e) {
       const tag = e.target.dataset.tag;
-      if (this.filter == "") {
+      if (this.filter === "") {
         this.filter = tag;
       }
       if (this.factors.indexOf(tag) == -1) {
@@ -199,33 +202,40 @@ export default {
       this.index = newId;
     },
     handleHash(hash) {
-      if (hash[0] === '!') {
+      if (hash[0] == '!') {
         // 图片详情
         let id = +hash.substr(1)
-        if (typeof id === 'number') {
+        if (typeof id == 'number') {
           this.toInfo(id);
         }
       } else {
         // 关键词检索
-        this.filter = hash.replace(/\//g, ',');
+        this.filter = decodeURIComponent(hash).replace(/\//g, ',');
       }
     }
   },
   computed: {
     factors() {
-      return this.filter.split(",", 10).filter(element => element != "");
+      return this.filter.split(",", 10)
+        .map(element => element.trim())
+        .filter(element => element !== "");
     }
   },
   watch: {
     filter() {
       this.currView = "picwall";
       this.index = -1;
+      setUrlHash(this.factors.join('/'));
     },
-    currView(val) {
-      if (val === 'picinfo') {
+    currView(newVal) {
+      if (newVal === 'picinfo') {
         document.body.className = "noscroll";
+        this.scrollY = document.documentElement.scrollTop || 0;
       } else {
         document.body.className = "";
+        setTimeout(() => {
+          window.scrollTo(0, this.scrollY);
+        }, 0);
         setUrlHash(this.filter.replace(/,/g, '/'));
       }
     }
