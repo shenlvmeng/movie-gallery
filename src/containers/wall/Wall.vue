@@ -99,7 +99,7 @@ export default {
             id: myarr[i],
             desc: this.res.content[myarr[i]].info,
             date: this.res.content[myarr[i]].date,
-            path: `${prefix}${myarr[i]}.${this.res.content[myarr[i]].type}-compress`
+            path: `${prefix}${myarr[i]}.${this.res.content[myarr[i]].type}-compressed`
           });
         }
       }

@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     path() {
-      return `${prefix}${this.id}.${this.res.content[this.id].type}-compress`;
+      return `${prefix}${this.id}.${this.res.content[this.id].type}-compressed`;
     },
     info() {
       return this.res.content[this.id].info;
