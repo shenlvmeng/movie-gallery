@@ -109,7 +109,7 @@ export default {
       result = shuffle(result).slice(0, relatedCount);
       return result.map(val => {
         return {
-          path: `${prefix}${val.id}.${this.res.content[val.id].type}-compress`,
+          path: `${prefix}${val.id}.${this.res.content[val.id].type}-compressed`,
           id: val.id,
           title: val.relatedTag
         }
