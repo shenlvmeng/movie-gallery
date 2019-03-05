@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     path() {
-      return `${prefix}${this.id}.${this.res.content[this.id].type}-compressed`;
+      return `${prefix}${this.id}.${this.res.content[this.id].type}`;
     },
     info() {
       return this.res.content[this.id].info;
@@ -109,7 +109,7 @@ export default {
       result = shuffle(result).slice(0, relatedCount);
       return result.map(val => {
         return {
-          path: `${prefix}${val.id}.${this.res.content[val.id].type}-compressed`,
+          path: `${prefix}${val.id}.${this.res.content[val.id].type}`,
           id: val.id,
           title: val.relatedTag
         }

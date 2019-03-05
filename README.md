@@ -14,7 +14,7 @@
   - 右上角输入框输入关键词/点击按钮
     - 大小写不敏感
     - 通过半角逗号隔开
-    - 支持部分搜索（partial search）
+    - 支持部分搜索
   - 点击图片详情页中的标签按钮
 - 图片详情页
   - 点击图片墙的图片进入
@@ -50,4 +50,4 @@ gulp release
 gulp [css | js | json]
 ```
 
-p.s.: 站内图片和`meta.json`托管在图床[Qiniu](https://qiniu.com).
+p.s.: 站内图片和`meta.json`托管在图床[Qiniu](https://qiniu.com)。*正考虑迁移能提供域名的OSS存储*。

@@ -12,7 +12,7 @@ gulp.task('js', function () {
       module: {
         rules: [
           { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-          { test: /\.vue$/, loader: 'vue-loader'},
+          { test: /\.vue$/, loader: 'vue-loader' },
           { test: /\.(png|jpg|gif|svg)$/, loader: 'file-loader', options: { name: '[name].[ext]?[hash]' } }
         ]
       },
@@ -35,7 +35,7 @@ gulp.task('minify', function () {
 })
 
 gulp.task('css', function () {
-	return gulp.src(['src/index.css'])
+	return gulp.src(['src/index.css', 'src/multiselect.css'])
 		.pipe(cleanCSS({compatibility: 'ie8'}))
 		.pipe(gulp.dest('dist'));
 });

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
   	<transition name="picinfo">
       <picinfo 
         v-if="currView == 'picinfo'"
@@ -93,11 +93,14 @@
             </ul>
           </li>
         </ul>
-        <div class="nav-padding"></div>
         <div class="nav-search">
-          <input type="text" name="tags" placeholder="按标签搜索，如：screenshot,妹子" v-model="filter">
-          <button @click="addPreface">搜海报</button>
-          <button @click="addShot">搜片断</button>
+          <Multiselect
+            :options="tagKeys"
+            placeholder="通过输入或选择标签来探索..."
+            v-model="factors"
+            :showLabels="false"
+            :multiple="true"
+          ></Multiselect>
         </div>
       </nav>
     </section>
@@ -121,9 +124,9 @@ import Info from './containers/info/Info.vue';
 export default {
   name: 'App',
   props: ["res", "tagList", "tagKeys"],
-  data(){
+  data() {
     return {
-      filter: "",
+      factors: [],
       pid: 0,
       currView: "picwall",
       // 当前活动的tab索引
@@ -134,11 +137,11 @@ export default {
   },
   mounted() {
     // 减少DOM修改
-    document.getElementById("navbar").addEventListener("click", e => {
+    document.getElementById("navbar").addEventListener("click", (e) => {
       let className = e.target.className,
           id = +e.target.id;
       if (className === "list-unit") {
-        this.addTag(e);
+        this.addTag(e.target.dataset.tag);
       } else if (!!~className.indexOf("list-item") && this.index !== id) {
         this.modifyIndex(id);
       } else {
@@ -154,33 +157,12 @@ export default {
     location.hash && this.handleHash(location.hash.substr(1));
   },
   methods: {
-    addPreface() {
-      if (this.filter === "") {
-        this.filter = "preface";
-      }
-      if (this.factors.indexOf("preface") == -1) {
-        this.filter += ",preface";
-      }
-    },
-    addShot() {
-      if (this.filter === "") {
-        this.filter = "screenshot";
-      }
-      if (this.factors.indexOf("screenshot") == -1) {
-        this.filter += ",screenshot";
-      }
-    },
-    addTag(e) {
-      const tag = e.target.dataset.tag;
-      if (this.filter === "") {
-        this.filter = tag;
-      }
-      if (this.factors.indexOf(tag) == -1) {
-        this.filter += ("," + tag);
+    addTag(tag) {
+      if (this.factors.indexOf(tag) === -1) {
+        this.factors.push(tag);
       }
     },
     toInfo(id) {
-      //console.log(id);
       // 越界检测
       if (id < 0 || id >= this.res.content.length) {
         return;
@@ -193,7 +175,7 @@ export default {
     },
     reviseTag(tag) {
       if (tag) {
-        this.filter = tag;
+        this.factors = [tag];
       } else {
         this.currView = "picwall";
       }
@@ -210,19 +192,13 @@ export default {
         }
       } else {
         // 关键词检索
-        this.filter = decodeURIComponent(hash).replace(/\//g, ',');
+        console.log(hash)
+        this.factors = decodeURIComponent(hash).split('/');
       }
     }
   },
-  computed: {
-    factors() {
-      return this.filter.split(",", 10)
-        .map(element => element.trim())
-        .filter(element => element !== "");
-    }
-  },
   watch: {
-    filter() {
+    factors() {
       this.currView = "picwall";
       this.index = -1;
       setUrlHash(this.factors.join('/'));
@@ -236,7 +212,7 @@ export default {
         setTimeout(() => {
           window.scrollTo(0, this.scrollY);
         }, 0);
-        setUrlHash(this.filter.replace(/,/g, '/'));
+        setUrlHash(this.factors.join('/'));
       }
     }
   },

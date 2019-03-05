@@ -1,8 +1,12 @@
 import Vue from 'vue';
+import Multiselect from 'vue-multiselect';
 
 import { loadFile, easeInOutCubic, animate, isMobile } from './helper/utils';
 import { metaUrl } from './constants/';
 import App from './App.vue';
+
+// register globally
+Vue.component('Multiselect', Multiselect);
 
 document.getElementById("totop").addEventListener("click", () => {
   animate(document.documentElement, "scrollTop", 0, 1000, easeInOutCubic);

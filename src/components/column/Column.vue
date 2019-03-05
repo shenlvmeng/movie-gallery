@@ -13,7 +13,13 @@
         @load="onload"
       >
       <aside>
-        <span>{{item.desc}}</span>
+        <div class="desc">
+          <span>{{
+            item.desc.length > 40
+              ? item.desc.slice(0, 40) + '...'
+              : item.desc
+          }}</span>
+        </div>
       </aside>
     </figure>
   </div>
