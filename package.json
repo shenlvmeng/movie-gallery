@@ -1,10 +1,11 @@
 {
-  "name": "myphotogallery",
+  "name": "movie-gallery",
   "version": "1.0.0",
-  "description": "A gallery display meaningful pictures or photos.",
+  "description": "Creative movie pictures gallery.",
   "main": "index.js",
   "scripts": {
     "start": "gulp",
+    "dev": "yarn start",
     "release": "gulp release"
   },
   "repository": {
@@ -17,13 +18,13 @@
     "gallery"
   ],
   "author": "shenlvmeng",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/shenlvmeng/MyPhotoGallery/issues"
   },
   "homepage": "https://github.com/shenlvmeng/MyPhotoGallery#readme",
   "dependencies": {
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "vue": "^2.4.4",
     "vue-multiselect": "^2.1.4"
   },

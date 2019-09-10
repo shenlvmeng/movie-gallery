@@ -1,15 +1,13 @@
-# MyPhotoGallery
+# movie-gallery
 
-> A project powered by Vue.js
+> 个人网站[MovieGallery](http://shenlvmeng.github.io/gallery/)源码
 
-个人网站[PhotoGallery](http://shenlvmeng.github.io/gallery/)源码。
+## 使用
 
-## 功能
-
-查看个人的所有影视剧图片收藏，PC和移动端均支持，PC端浏览效果更好。
+查看个人的所有影视剧图片收藏
 
 - 图片墙
-  -支持多标签过滤
+  - 多标签过滤
   - 在左上下拉菜单中点击标签
   - 右上角输入框输入关键词/点击按钮
     - 大小写不敏感
@@ -18,16 +16,16 @@
   - 点击图片详情页中的标签按钮
 - 图片详情页
   - 点击图片墙的图片进入
-  - 点击图片查看大图
+  - 点击图片可查看大图
   - 右下角根据标签相似度展示相似图片
   - 相似图片鼠标悬停可以看到相似点（即重叠的标签名）
 - 支持分享图片详情页和搜索结果页
   - 打开分享链接直接进入对应页面
-- 单页面应用，懒加载，滚动刷新
+- 单页面应用，懒加载，滚动加载
 - 图片和配置信息放在图床，内容展示分离
 - 瀑布流布局，宽度自适应
 
-## 设计
+## meta.json
 
 使用`meta.json`文件存储图片的相关信息，从0开始顺序命名展示的每张图片，通过命名和json文件和`content`数组关联。
 
@@ -36,9 +34,10 @@
 - **date**: 图片的创建时间
 - **info**: 图片描述
 - **tags**: 最重要的部分。图片的标签，用来和其他图片建立关联并方便检索。
-- **type**: 图片格式
+- **url**: 图片url
+- **type**: 图片后缀（目前没有使用）
 
-## 环境
+## 开发
 
 ```bash
 npm install
@@ -50,4 +49,6 @@ gulp release
 gulp [css | js | json]
 ```
 
-p.s.: 站内图片和`meta.json`托管在图床[Qiniu](https://qiniu.com)。*正考虑迁移能提供域名的OSS存储*。
+~~p.s.: 站内图片和`meta.json`托管在图床[Qiniu](https://qiniu.com)。~~
+
+p.p.s: 七牛测试域名已收回，图床目前选择[sm.ms](https://sm.ms)
