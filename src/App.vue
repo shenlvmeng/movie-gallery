@@ -12,7 +12,6 @@
     <section id="navbar">
       <nav>
         <a href="#" id="brand">
-          <img src="../favicon.png">
           <span class="slogan">PhotoGallery</span>
         </a>
         <ul class="nav-categories">
@@ -83,6 +82,7 @@
             id="4"
           >按观影时间 ▾
             <ul>
+              <li class="list-unit" data-tag="2018">2019</li>
               <li class="list-unit" data-tag="2018">2018</li>
               <li class="list-unit" data-tag="2017">2017</li>
               <li class="list-unit" data-tag="2016">2016</li>

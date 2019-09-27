@@ -95,11 +95,12 @@ export default {
       for (let i = myarr.length - 1; i >= 0; i--) {
         if (tmp[myarr[i]] == undefined) {
           tmp[myarr[i]] = 1;
+          const currImgPath = this.res.content[myarr[i]].path;
           tmparr.push({
             id: myarr[i],
             desc: this.res.content[myarr[i]].info,
             date: this.res.content[myarr[i]].date,
-            path: `${prefix}${myarr[i]}.${this.res.content[myarr[i]].type}`
+            path: currImgPath.startsWith('https://') ? currImgPath : `${prefix}${currImgPath}`
           });
         }
       }

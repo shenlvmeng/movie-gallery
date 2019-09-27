@@ -1,34 +1,42 @@
 * {
   box-sizing: border-box;
 }
+
 html, body {
   min-height: 100%;
   width: 100%;
-  font-family: Helvetica, Arial, "Microsoft Yahei";
+  font-family: BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
+
 body, p, figure, ul, h1, h2, h3, h4, h5 {
   margin: 0;
   padding: 0;
 }
+
 body {
   min-width: 300px;
   background: #f4f4f4;
 }
+
 a {
   text-decoration: none;
   color: #eee;
 }
+
 ul {
   list-style-type: none;
 }
+
 .app {
   padding-top: 60px;
 }
 
 /*--- header part ---*/
+
 aside {
   position: fixed;
 }
+
 #navbar {
   position: fixed;
   top: 0;
@@ -36,9 +44,11 @@ aside {
   width: 100%;
   z-index: 10;
 }
+
 nav {
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   width: 100%;
   height: 50px;
   background-color: #41b883;
@@ -46,6 +56,7 @@ nav {
   color: #fff;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+
 a#brand {
   display: inline-block;
   margin: 0 5px;
@@ -55,31 +66,36 @@ a#brand {
   font-weight: bold;
   font-size: 20px;
 }
+
 nav img {
   height: 40px;
   vertical-align: middle;
   margin-right: 5px;
   margin-top: -3px;
 }
-#brand ~ ul {
+
+#brand~ul {
   margin-left: 10px;
 }
-.list-item{
+
+.list-item {
   display: inline-block;
   position: relative;
   margin: 0 10px;
-	font-size: 14px;
+  font-size: 14px;
   line-height: 40px;
   color: #eee;
   cursor: pointer;
 }
-.list-item:hover,
-.list-item:active {
+
+.list-item:hover, .list-item:active {
   color: #fff;
 }
+
 .list-item:hover ul {
   display: block;
 }
+
 .list-item ul {
   display: none;
   position: absolute;
@@ -90,73 +106,95 @@ nav img {
   color: #fff;
   z-index: 10;
 }
+
 li:last-child ul {
   width: 85px;
 }
+
 li.show ul {
   display: block;
 }
+
 .list-unit {
   width: 100%;
   padding: 0 15px 0 10px;
   color: #eee;
   box-sizing: border-box;
 }
+
 .list-unit:hover {
   color: #fff;
   background: #1eab43;
   background-origin: border-box;
 }
+
 @media(max-width: 500px) {
   nav .multiselect {
     min-width: 200px;
   }
-  .slogan {
-    display: none;
-  }
-}
-.nav-categories {
-  flex: 1;
-}
-@media (max-width: 935px) {
   .nav-categories {
     display: none;
   }
+  a#brand {
+    display: none;
+  }
 }
+
+.nav-categories {
+  flex: 1;
+}
+
+@media (max-width: 935px) and (min-width: 500px) {
+  .nav-categories {
+    display: none;
+  }
+  a#brand {
+    flex: 1;
+  }
+}
+
 nav .multiselect {
   min-width: 300px;
   max-width: 400px;
 }
+
 nav .multiselect__input {
   font-size: 14px;
 }
+
 nav .multiselect__tags {
   height: 36px;
   padding: 8px 40px 6px 12px;
   border-radius: 4px;
 }
+
 nav .multiselect--active .multiselect__tags {
   height: auto;
 }
+
 nav .multiselect__input {
   line-height: 24px;
 }
+
 nav .multiselect__tag-icon {
   line-height: 20px;
 }
+
 nav .multiselect__tags-wrap {
   display: block;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
 }
+
 nav .multiselect__tags-wrap::-webkit-scrollbar {
-    height: 0;
-    width: 0;
-    display: none;
+  height: 0;
+  width: 0;
+  display: none;
 }
 
 /*--- wall part ---*/
+
 #photos {
   display: flex;
   flex-flow: row wrap;
@@ -164,11 +202,13 @@ nav .multiselect__tags-wrap::-webkit-scrollbar {
   justify-content: space-around;
   width: 100%;
 }
+
 .wall-column {
   display: inline-block;
   width: 240px;
   margin: 0 8px;
 }
+
 #photos figure {
   position: relative;
   /* Just in case there are inline attributes */
@@ -176,17 +216,20 @@ nav .multiselect__tags-wrap::-webkit-scrollbar {
   height: auto !important;
   margin-bottom: 16px;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: box-shadow 0.4s cubic-bezier(.25,.8,.25,1), margin 0.4s cubic-bezier(.25,.8,.25,1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: box-shadow 0.4s cubic-bezier(.25, .8, .25, 1), margin 0.4s cubic-bezier(.25, .8, .25, 1);
 }
+
 #photos figure:hover {
   margin-top: -4px;
   margin-bottom: 20px;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
+
 #photos figure img {
   width: 100%;
 }
+
 #photos figure aside {
   display: none;
   position: absolute;
@@ -201,32 +244,38 @@ nav .multiselect__tags-wrap::-webkit-scrollbar {
   background-color: rgba(0, 0, 0, 0.8);
   pointer-events: none;
 }
+
 #photos figure:hover aside {
   display: block;
 }
+
 #photos .desc {
   display: table;
   width: 100%;
   height: 100%;
 }
+
 #photos figure .desc span {
   display: table-cell;
   vertical-align: middle;
 }
+
 footer {
   padding: 8px 0;
   font-size: 14px;
   color: #444;
   width: 100%;
   text-align: center;
-  font-family: "Helvetica Neue", "Microsoft Yahei", serif;
   font-weight: bold;
 }
+
 footer .endding {
   padding: 30px 0 50px;
   color: #999;
+  font-size: 12px;
   font-weight: normal;
 }
+
 #display {
   position: fixed;
   top: 0;
@@ -242,12 +291,14 @@ footer .endding {
   z-index: 100;
   overflow-y: scroll;
 }
+
 .clearfix::after {
   content: " ";
   display: block;
   height: 0;
   clear: both;
 }
+
 #display aside {
   position: absolute;
   top: 0;
@@ -256,15 +307,18 @@ footer .endding {
   color: #666;
   cursor: pointer;
 }
+
 #display figure {
   max-width: 800px;
   padding: 0 20px;
   cursor: pointer;
 }
+
 #display figure img {
   width: 100%;
   padding-bottom: 60px;
 }
+
 #imginfo {
   float: left;
   max-width: 500px;
@@ -272,29 +326,35 @@ footer .endding {
   color: #bbb;
   font-size: 14px;
 }
+
 @media (max-width: 1240px) {
-  #imginfo{
+  #imginfo {
     border: 0 !important;
   }
 }
+
 #imginfo p {
   min-height: 100px;
   line-height: 2em;
   padding: 10px 20px;
   display: table;
 }
+
 .vertical-center {
   display: table-cell;
   vertical-align: middle;
 }
+
 .img-intro {
   color: #eee;
 }
+
 #imgtags {
   padding: 20px;
   border-top: 1px solid #e8e8e8;
   border-bottom: 1px solid #e8e8e8;
 }
+
 #imgtags span {
   display: inline-block;
   margin: 0 8px 10px 0;
@@ -306,16 +366,19 @@ footer .endding {
   font-weight: bold;
   cursor: pointer;
 }
+
 #imgrelated {
   padding: 20px;
   color: #eee;
 }
+
 #imgrelated img {
   height: 120px;
   margin: 10px;
   float: left;
   cursor: pointer;
 }
+
 #totop {
   bottom: 60px;
   right: 30px;
@@ -327,9 +390,11 @@ footer .endding {
   cursor: pointer;
   transition: opacity .8s ease .2s;
 }
-#totop div{
+
+#totop div {
   margin: 12px 7px;
 }
+
 #hint {
   left: 0;
   bottom: 0;
@@ -342,10 +407,12 @@ footer .endding {
   font-size: 14px;
   transition: opacity .5s;
 }
+
 #close {
   font-size: 18px;
   margin-right: 10px;
 }
+
 .arrow-up {
   width: 0;
   height: 0;
@@ -353,20 +420,25 @@ footer .endding {
   border-right: 18px solid transparent;
   border-bottom: 25px solid #fff;
 }
+
 .picinfo-leave-active, .picinfo-enter-active {
   transition: all .4s;
 }
+
 .picinfo-enter, .picinfo-leave-active {
   opacity: 0 !important;
   transform: translateY(20px);
 }
+
 .noscroll {
   overflow-y: hidden;
   overflow-x: hidden;
 }
+
 .hidden {
   opacity: 0 !important;
 }
+
 .loading {
   left: 0;
   display: flex;
@@ -382,12 +454,14 @@ footer .endding {
   z-index: 100;
   transition: opacity .5s;
 }
+
 .spinner {
   margin: 0 auto 20px;
   width: 70px;
   text-align: center;
 }
-.spinner > div {
+
+.spinner>div {
   width: 18px;
   height: 18px;
   background-color: #41b883;
@@ -396,27 +470,37 @@ footer .endding {
   -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
+
 .spinner .bounce1 {
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
+
 .spinner .bounce2 {
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
+
 @-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
+  0%, 80%, 100% {
+    -webkit-transform: scale(0)
+  }
+  40% {
+    -webkit-transform: scale(1.0)
+  }
 }
+
 @keyframes sk-bouncedelay {
   0%, 80%, 100% {
     -webkit-transform: scale(0);
     transform: scale(0);
-  } 40% {
+  }
+  40% {
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
 }
+
 .spinner p {
   margin-top: 20px;
 }

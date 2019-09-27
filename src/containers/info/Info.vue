@@ -13,12 +13,13 @@
         <span class="vertical-center img-intro">{{info}}</span>
       </p>
       <div id="imgtags" @click="chooseTag">
-        <span v-for="tag in tags">{{tag}}</span>
+        <span v-for="(tag, index) in tags" :key="index">{{tag}}</span>
       </div>
       <div id="imgrelated" class="clearfix" @click="choosePic">
         <div>相关的图片：</div>
         <img 
-          v-for="relate in relates" 
+          v-for="(relate, index) in relates"
+          :key="index"
           :src="relate.path" 
           :id="relate.id" 
           :title="relate.title"
@@ -62,11 +63,14 @@ export default {
       if (e.target.id == "display" || e.target.id == "imginfo" || e.target.tagName.toLowerCase() == "aside") {
         this.$emit("revisetag");
       }
+    },
+    getPath(path) {
+      return path.startsWith('https://') ? path : `${prefix}${path}`
     }
   },
   computed: {
     path() {
-      return `${prefix}${this.id}.${this.res.content[this.id].type}`;
+      return this.getPath(this.res.content[this.id].path);
     },
     info() {
       return this.res.content[this.id].info;
@@ -109,7 +113,7 @@ export default {
       result = shuffle(result).slice(0, relatedCount);
       return result.map(val => {
         return {
-          path: `${prefix}${val.id}.${this.res.content[val.id].type}`,
+          path: this.getPath(this.res.content[val.id].path),
           id: val.id,
           title: val.relatedTag
         }

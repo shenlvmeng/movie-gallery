@@ -22,8 +22,8 @@ if (isMobile()) {
 
 loadFile(metaUrl, res => {
   // 打印meta data
-  console.log(`${res.name}: ${res.description}`);
   console.log(`Author: ${res.author}`);
+  console.log(`Version: ${res.version}`);
 
   const length = res.content.length;
   let tag_keys,
